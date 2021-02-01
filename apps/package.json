@@ -62,7 +62,7 @@
     "setup:dev": "nodemon",
     "dev": "npm-run-all -p setup:browser setup:dev",
     "build": "tsc && cp -r resource/views build",
-    "start": "node build/server.js",
+    "start": "node build/serve.js",
     "serve": "npm-run-all -p setup:browser start",
     "clean": "rimraf build/*",
     "jest": "jest --passWithNoTests",
