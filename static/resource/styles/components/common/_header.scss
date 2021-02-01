@@ -1,0 +1,26 @@
+@charset "UTF-8";
+@use "../../mixins";
+
+.component-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 50px 0 0;
+  margin: 0 0 40px 0;
+
+  @include mixins.isLargeMobile {}
+
+  // scoped.
+
+  .heading01 {
+    font-size: 3em;
+    font-weight: 300;
+
+    @include mixins.isLargeMobile {
+      font-size: 5.6em
+    }
+
+  }
+
+}

@@ -1,0 +1,72 @@
+{
+  "name": "apps",
+  "version": "1.0.0",
+  "description": "Backend for Express MVC Scaffold.",
+  "main": "index.js",
+  "repository": "git@github.com:kojiyamauchi/express-mvc-scaffold.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.11",
+    "@types/http-errors": "^1.8.0",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.22",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "browser-sync": "^2.26.14",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "eslint": "^7.18.0",
+    "eslint-config-import": "^0.13.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "http-errors": "^1.8.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "^@/(.+)": "<rootDir>/resource/$1"
+    },
+    "transform": {
+      "^.+\\.(ts)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/resource/tests/**/*.test.+(ts|js)"
+    ]
+  },
+  "scripts": {
+    "setup:browser": "browser-sync start --config bs-config.js",
+    "setup:dev": "nodemon",
+    "dev": "npm-run-all -p setup:browser setup:dev",
+    "build": "tsc && cp -r resource/views build",
+    "start": "node build/server.js",
+    "serve": "npm-run-all -p setup:browser start",
+    "clean": "rimraf build/*",
+    "jest": "jest --passWithNoTests",
+    "lint": "eslint 'resource/**/*.{ts,js}' --max-warnings 0",
+    "lint:fix": "eslint --fix 'resource/**/*.{ts,js}' --max-warnings 0"
+  }
+}

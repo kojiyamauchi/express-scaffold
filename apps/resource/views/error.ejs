@@ -1,0 +1,47 @@
+<%
+props = {
+  title: '404 Page | Express MVC Scaffold',
+  description : 'This is Express MVC Scaffold.',
+  ogpURL: 'Add OGP URL.',
+  ogpSitename: 'Add OGP Site Name.',
+  ogpTitle: 'Add OGP Title.',
+  ogpDescription: 'Add OGP Description.',
+  ogpImage: 'Add OGP Images File Path.',
+  cssPlugins: false,
+  cssCoreFile: 'primary',
+  ecmaPolyfill: false,
+  ecmaModules: false,
+  ecmaCoreFile: 'core',
+  pages: 'primary'
+}
+%>
+<!DOCTYPE html>
+<html lang="ja">
+  <!-- Head -->
+  <head>
+    <%- include ('components/common/_head') %>
+    <%- include ('components/common/_css') %>
+  </head>
+  <!-- /Head -->
+  <body class="<%= props.pages %>">
+    <!-- Header -->
+    <%- include ('components/common/_header') %>
+    <!-- /Header -->
+    <!-- Navigation -->
+    <%- include ('components/common/_navigation') %>
+    <!-- /Navigation -->
+    <!-- Main Contents -->
+    <main>
+      <!-- Heading -->
+      <%- include ('components/common/_heading', { heading: 'This is 404 Page.'}) %>
+      <!-- /Heading -->
+    </main>
+    <!-- /Main Contents -->
+    <!-- Footer -->
+    <%- include ('components/common/_footer') %>
+    <!-- /Footer -->
+    <!-- JavaScript -->
+    <%- include ('components/common/_js') %>
+    <!-- /JavaScript -->
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "name": "express-mvc-scaffold",
+  "version": "1.0.0",
+  "description": "This is Express MVC Scaffold.",
+  "main": "index.js",
+  "repository": "git@github.com:kojiyamauchi/express-mvc-scaffold.git",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps",
+      "static"
+    ],
+    "nohoist": []
+  },
+  "devDependencies": {
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
+    "npm-run-all": "^4.1.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --allow-empty"
+    }
+  },
+  "lint-staged": {
+    "apps/resource/**/*.{ts,js}": [
+      "yarn workspace apps prettier --write",
+      "yarn workspace apps eslint --fix --max-warnings 0"
+    ],
+    "static/resource/**/*.{ts,js}": [
+      "yarn workspace static prettier --write",
+      "yarn workspace static eslint --fix --max-warnings 0"
+    ],
+    "static/resource/**/*.scss": "yarn workspace static stylelint --fix",
+    "static/webpack/*.js": "yarn workspace static prettier --write",
+    "static/gulpfile.babel.js": "prettier --write"
+  },
+  "scripts": {
+    "apps:dev": "yarn workspace apps dev",
+    "apps:build": "yarn workspace apps build",
+    "apps:clean": "yarn workspace apps clean",
+    "apps:lint": "yarn workspace apps lint",
+    "apps:jest": "yarn workspace apps jest",
+    "static:dev": "yarn workspace static dev",
+    "static:build": "yarn workspace static build",
+    "static:clean": "yarn workspace static clean",
+    "static:lint": "yarn workspace static lint",
+    "static:stylelint": "yarn workspace static stylelint",
+    "static:jest": "yarn workspace static jest",
+    "dev": "npm-run-all -p apps:dev static:dev",
+    "build": "npm-run-all -p apps:build static:build",
+    "clean": "npm-run-all -p apps:clean static:clean",
+    "lint": "npm-run-all -p apps:lint static:lint",
+    "stylelint": "npm-run-all -p static:stylelint",
+    "jest": "npm-run-all -p apps:jest static:jest",
+    "serve": "yarn workspace apps serve",
+    "start": "yarn workspace apps start"
+  }
+}

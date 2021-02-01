@@ -1,0 +1,10 @@
+node_modules/
+.history/
+.DS_Store
+delivery/*
+!delivery/.gitkeep
+apps/build/*
+!apps/build/.gitkeep
+yarn.lock
+.github/workflows/delivery.yml
+

@@ -1,0 +1,25 @@
+@charset "UTF-8";
+@use "../../mixins";
+
+.component-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 0 20px;
+
+  @include mixins.isLargeMobile {}
+
+  // scoped.
+
+  .letter {
+    font-family: Lobster, cursive;
+    font-size: 1.5em;
+
+    @include mixins.isLargeMobile {
+      font-size: 2.4em
+    }
+
+  }
+
+}

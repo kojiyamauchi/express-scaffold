@@ -1,0 +1,115 @@
+name: CI
+on:
+  pull_request:
+    types: synchronize
+    branches: develop
+
+env:
+  LAUNCH_ESLINT: on # Launch ESLint. [ on, off ]
+  LAUNCH_STYLELINT: on # Launch stylelint. [ on, off ]
+  LAUNCH_JEST: on # Launch Jest. [ on, off ]
+  LAUNCH_BUILD: on # Launch Build. [ on, off ]
+
+jobs:
+  eslint-and-stylelint-and-jest:
+    name: ESLint & stylelint & Jest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Execution Environment for Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Set Env
+        run: |
+          echo "LAUNCH_ESLINT=${LAUNCH_ESLINT}" >> $GITHUB_ENV
+          echo "LAUNCH_STYLELINT=${LAUNCH_STYLELINT}" >> $GITHUB_ENV
+          echo "LAUNCH_JEST=${LAUNCH_JEST}" >> $GITHUB_ENV
+          if ls backend/resource/tests/*.test.ts > /dev/null 2>&1
+          then
+              echo "APPS_FILE_EXISTS=on" >> $GITHUB_ENV
+          else
+              echo "APPS_FILE_EXISTS=off" >> $GITHUB_ENV
+          fi
+          if ls static/resource/tests/*.test.ts > /dev/null 2>&1
+          then
+              echo "STATIC_FILE_EXISTS=on" >> $GITHUB_ENV
+          else
+              echo "STATIC_FILE_EXISTS=off" >> $GITHUB_ENV
+          fi
+        shell: bash
+      - name: Get Yarn Cache Directory
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: yarn
+      - name: Do ESLint APPS
+        if: env.LAUNCH_ESLINT == 'on'
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: "apps/resource/**/*.{ts,js}"
+      - name: Do ESLint Static
+        if: env.LAUNCH_ESLINT == 'on'
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: "static/resource/**/*.{ts,js}"
+      - name: Displayed ESLINT Failure on Checks
+        if: env.LAUNCH_ESLINT == 'on'
+        run: yarn lint
+      - name: Do stylelint Static
+        if: env.LAUNCH_STYLELINT == 'on'
+        uses: reviewdog/action-stylelint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          stylelint_input: "static/resource/**/*.scss"
+      - name: Displayed stylelint Failure on Checks
+        if: env.LAUNCH_STYLELINT == 'on'
+        run: yarn stylelint
+      - name: Do Jest Apps
+        if: env.LAUNCH_JEST == 'on' && env.APPS_FILE_EXISTS == 'on'
+        run: yarn workspace apps jest
+      - name: Do Jest Static
+        if: env.LAUNCH_JEST == 'on' && env.STATIC_FILE_EXISTS == 'on'
+        run: yarn workspace static jest
+
+  build-test:
+    name: Build Test
+    needs: eslint-and-stylelint-and-jest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Execution Environment for Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Set Env
+        run: echo "LAUNCH_BUILD=${LAUNCH_BUILD}" >> $GITHUB_ENV
+      - name: Get Yarn Cache Directory
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: yarn
+      - name: Do Build Test
+        if: env.LAUNCH_BUILD == 'on'
+        run: yarn build

@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@use "../mixins";
+
+.txt-indent {
+  text-indent: -10000px;
+}
+
+.is-mobile {
+  display: block;
+}
+
+.is-tablet {
+  display: block;
+}
+
+.is-desktop {
+  display: none;
+}
+@include mixins.isLargeMobile {
+  .is-mobile {
+    display: none;
+  }
+
+  .is-tablet {
+    display: block;
+  }
+
+  .is-desktop {
+    display: block;
+  }
+}
+@include mixins.isTablet {
+  .is-mobile {
+    display: none;
+  }
+
+  .is-tablet {
+    display: none;
+  }
+
+  .is-desktop {
+    display: block;
+  }
+}

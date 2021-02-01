@@ -1,0 +1,62 @@
+root: true
+env:
+  node: true
+  es6: true
+  jest/globals: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+  # When Use TypeScript, Setting of Root Dir. ( To Find for tsconfig.json )
+  tsconfigRootDir: '.'
+  # When Use TypeScript, Import tsconfig Setting.
+  project: './tsconfig.json'
+  sourceType: module
+plugins:
+  - '@typescript-eslint'
+  - import
+  - jest
+settings:
+  node:
+    tryExtensions:
+      - '.js'
+      - '.ts'
+      - '.json'
+      - '.node'
+#
+#
+# Set Linting Rules Below.
+extends:
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'prettier'
+rules:
+  indent: off
+  '@typescript-eslint/no-non-null-assertion': off
+  '@typescript-eslint/naming-convention': off
+  '@typescript-eslint/no-namespace': off
+  '@typescript-eslint/member-delimiter-style': off
+  '@typescript-eslint/no-empty-function': off
+  '@typescript-eslint/prefer-interface': off
+  '@typescript-eslint/explicit-function-return-type': warn
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - varsIgnorePattern: '^AddIgnoreVariables'
+  'max-classes-per-file':
+    - error
+    - 2
+  'no-bitwise':
+    - error
+    - allow:
+        - '~'
+  'import/order': off
+  'sort-keys': off
+  'no-multiple-empty-lines': off
+  'lines-between-class-members':
+    - error
+    - always
+    - exceptAfterSingleLine: true
+  'no-console': off
+  'unicorn/number-literal-case': off
+  'spaced-comment':
+    - error
+    - always
+  '@typescript-eslint/ban-ts-comment': error

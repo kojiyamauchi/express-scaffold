@@ -1,0 +1,5 @@
+{
+  "watch": ["./resource/", "../delivery/"],
+  "ext": "ts,js,json,css,ejs,html,webp,svg,png,jpg,jpeg,gif",
+  "exec": "ts-node resource/server.ts"
+}
