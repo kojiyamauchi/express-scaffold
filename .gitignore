@@ -5,6 +5,8 @@ delivery/*
 !delivery/.gitkeep
 apps/build/*
 !apps/build/.gitkeep
+static/resource/materials/css
+static/resource/materials/maps
 yarn.lock
 .github/workflows/delivery.yml
 
