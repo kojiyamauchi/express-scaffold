@@ -3,7 +3,7 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import createError from 'http-errors'
-import { primary, secondary, third, fourth } from './routes'
+import { routes } from './routes'
 
 const app = express()
 const root = path.resolve(`${__dirname}/` + '../../delivery/')
@@ -25,10 +25,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(logger('dev'))
 // Rooter.
-app.use('/', primary)
-app.use('/secondary', secondary)
-app.use('/third', third)
-app.use('/fourth', fourth)
+app.use('/', routes.primary)
+app.use('/secondary', routes.secondary)
+app.use('/third', routes.third)
+app.use('/fourth', routes.fourth)
 // Catch 404 and Forward to Error Handler
 app.use((_req, _res, next) => next(createError(404)))
 // Error Handler

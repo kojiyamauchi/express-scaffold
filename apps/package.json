@@ -59,12 +59,12 @@
     ]
   },
   "scripts": {
-    "setup:dev": "nodemon",
     "setup:browser": "wait-on http://localhost:3000 && browser-sync start --config bs-config.js",
-    "dev": "npm-run-all -p setup:dev setup:browser",
+    "setup:dev": "nodemon",
+    "dev": "npm-run-all -p setup:browser setup:dev",
     "build": "tsc && cp -r resource/views build",
-    "start": "node build/serve.js",
-    "serve": "npm-run-all -p setup:browser start",
+    "serve": "node build/serve.js",
+    "serve:local": "npm-run-all -p setup:browser serve",
     "clean": "rimraf build/*",
     "jest": "jest --passWithNoTests",
     "lint": "eslint 'resource/**/*.{ts,js}' --max-warnings 0",

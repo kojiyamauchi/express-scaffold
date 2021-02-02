@@ -9,7 +9,9 @@ Express MVC Scaffold.
   - `yarn dev`
 - Build.
   - `yarn build`
-- Serve Start.
-  - `yarn start`
+- Serve Start on Production.
+  - `yarn serve`
+- Serve Start on Local.
+  - `yarn serve:local`
 
 <h2 align="center">🚶‍♂️🚶‍♂️🚶‍♂️</h2>
