@@ -26,7 +26,7 @@ jobs:
           echo "LAUNCH_ESLINT=${LAUNCH_ESLINT}" >> $GITHUB_ENV
           echo "LAUNCH_STYLELINT=${LAUNCH_STYLELINT}" >> $GITHUB_ENV
           echo "LAUNCH_JEST=${LAUNCH_JEST}" >> $GITHUB_ENV
-          if ls backend/resource/tests/*.test.ts > /dev/null 2>&1
+          if ls apps/resource/tests/*.test.ts > /dev/null 2>&1
           then
               echo "APPS_FILE_EXISTS=on" >> $GITHUB_ENV
           else
