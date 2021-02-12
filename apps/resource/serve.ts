@@ -1,7 +1,18 @@
 import app from './app'
 import path from 'path'
+import fs from 'fs'
+import https from 'https'
 
-app.listen(3000, () => {
-  console.log('Looking Delivery Dir From Serve.ts\n', path.resolve(`${__dirname}/` + '../../delivery/'))
-  console.log('Application started')
-})
+/* TBD for Http Server.
+import http from 'http'
+const env = app.get('env')
+const server = http.createServer(app)
+server.listen(3000, () => console.log('Http Application Started'))
+*/
+
+const setupHttps = {
+  key: fs.readFileSync(path.resolve(__dirname, '../server.key')),
+  cert: fs.readFileSync(path.resolve(__dirname, '../server.cert'))
+}
+const server = https.createServer(setupHttps, app)
+server.listen(3000, () => console.log('Https Application Started.'))
