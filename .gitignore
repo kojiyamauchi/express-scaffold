@@ -7,6 +7,9 @@ apps/build/*
 !apps/build/.gitkeep
 static/resource/materials/css
 static/resource/materials/maps
+static/resource/materials/images/*.webp
 yarn.lock
+apps/server.cert
+apps/server.key
 .github/workflows/delivery.yml
 
