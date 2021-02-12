@@ -1,18 +1,19 @@
 <%
 props = {
-  title: '404 Page | Express MVC Scaffold',
-  description : 'This is Express MVC Scaffold.',
+  title: '404 Not found | Express MVC Scaffold',
+  description : '404 Not found Page | This is Express MVC Scaffold.',
   ogpURL: 'Add OGP URL.',
   ogpSitename: 'Add OGP Site Name.',
   ogpTitle: 'Add OGP Title.',
   ogpDescription: 'Add OGP Description.',
   ogpImage: 'Add OGP Images File Path.',
   cssPlugins: false,
-  cssCoreFile: 'primary',
+  cssCoreFile: 'not-found',
   ecmaPolyfill: false,
   ecmaModules: false,
   ecmaCoreFile: 'core',
-  pages: 'primary'
+  pages: 'not-found',
+  redirect: true
 }
 %>
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ props = {
     <!-- Main Contents -->
     <main>
       <!-- Heading -->
-      <%- include ('components/common/_heading', { heading: 'This is 404 Page.'}) %>
+      <%- include ('components/common/_heading', { className: props.pages, heading: heading }) %>
       <!-- /Heading -->
     </main>
     <!-- /Main Contents -->

@@ -1,7 +1,7 @@
 <%
 props = {
   title: 'Secondary Page | Express MVC Scaffold',
-  description : 'This is Express MVC Scaffold.',
+  description : 'Secondary Page | This is Express MVC Scaffold.',
   ogpURL: 'Add OGP URL.',
   ogpSitename: 'Add OGP Site Name.',
   ogpTitle: 'Add OGP Title.',
@@ -12,7 +12,8 @@ props = {
   ecmaPolyfill: false,
   ecmaModules: false,
   ecmaCoreFile: 'core',
-  pages: 'secondary'
+  pages: 'secondary',
+  redirect: false
 }
 %>
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ props = {
     <!-- Main Contents -->
     <main>
       <!-- Heading -->
-      <%- include ('../components/common/_heading', { heading: heading }) %>
+      <%- include ('../components/common/_heading', { className: props.pages, heading: heading }) %>
       <!-- /Heading -->
     </main>
     <!-- /Main Contents -->
