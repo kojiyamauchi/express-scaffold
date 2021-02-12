@@ -5,7 +5,8 @@ const switches = {
   ecma: true,
   json: true,
   styles: true,
-  compressionImages: true,
+  webps: true,
+  minifyImages: true,
   favicon: true,
   siteMap: false,
   htaccess: false,
@@ -27,12 +28,13 @@ import sassCompiler from 'sass'
 import stylelint from 'gulp-stylelint'
 import sassGlob from 'gulp-sass-glob'
 import fibers from 'fibers'
-import postCSS from 'gulp-postcss'
+import postCss from 'gulp-postcss'
 import autoprefixer from 'autoprefixer'
 import fixFlexBugs from 'postcss-flexbugs-fixes'
 import cacheBustingBackgroundImage from 'postcss-cachebuster'
 import cssmin from 'gulp-cssmin'
 // For Images.
+import webp from 'gulp-webp'
 import imagemin from 'gulp-imagemin'
 import mozjpeg from 'imagemin-mozjpeg'
 import pngquant from 'imagemin-pngquant'
@@ -47,15 +49,36 @@ import crypto from 'crypto'
 import gulpIf from 'gulp-if'
 import { exec } from 'child_process'
 
-// Settings.
+// Setup.
 sass.compiler = sassCompiler
-const settings = {
-  postCSSLayoutFix: [autoprefixer({ grid: true }), fixFlexBugs],
-  postCSSCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
-  styleEntryPointIgnore: [],
-  styleGlobIgnore: [],
-  inCompressionImages: ['./resource/materials/images/*'],
-  outCompressionImages: '../delivery/assets/images/'
+const setup = {
+  ecmas: {
+    in: './resource/base/**/*',
+    out: '../delivery/assets/js/',
+    inTypes: './resource/types/**/*',
+    inJson: './resource/materials/json/*',
+    outJson: '../delivery/assets/json/'
+  },
+  styles: {
+    inScss: './resource/styles/**/*.scss',
+    outScss: './resource/materials/css/',
+    inCss: './resource/materials/css/**/*.css',
+    outCss: '../delivery/assets/css/',
+    entryPointIgnore: [],
+    globIgnore: [],
+    postCssLayoutFix: [autoprefixer({ grid: true }), fixFlexBugs],
+    postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })]
+  },
+  images: {
+    in: './resource/materials/images/*.{svg,png,jpg,jpeg,gif}',
+    out: '../delivery/assets/images/',
+    inWebps: './resource/materials/toWebps/*.{svg,png,jpg,jpeg,gif}',
+    outWebps: './resource/materials/images/'
+  },
+  favicons: {
+    in: './resource/materials/favicons/*',
+    out: '../delivery/assets/favicons/'
+  }
 }
 
 // Development Mode of ECMA by Webpack.
@@ -64,7 +87,7 @@ export const onWebpackDev = () => {
     .on('error', function () {
       this.emit('end')
     })
-    .pipe(dest('../delivery/assets/js/'))
+    .pipe(dest(setup.ecmas.out))
 }
 
 // Production Mode of ECMA by Webpack.
@@ -73,37 +96,42 @@ export const onWebpackPro = () => {
     .on('error', function () {
       this.emit('end')
     })
-    .pipe(dest('../delivery/assets/js/'))
+    .pipe(dest(setup.ecmas.out))
 }
 
 // When Add JSON.
 export const onJson = () => {
-  return src('./resource/materials/json/*').pipe(dest('../delivery/assets/json/'))
+  return src(setup.ecmas.inJson).pipe(dest(setup.ecmas.outJson))
 }
 
 // Compile Sass.
 export const onSass = () => {
-  return src(['./resource/styles/**/*.scss', ...settings.styleEntryPointIgnore], { sourcemaps: true })
+  return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
     .pipe(plumber({ errorHandler: notify.onError({ message: 'SCSS Compile Error: <%= error.message %>', onLast: true }) }))
     .pipe(stylelint({ reporters: [{ formatter: 'string', console: true }] }))
-    .pipe(sassGlob({ ignorePaths: settings.styleGlobIgnore }))
+    .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
     .pipe(sass({ fiber: fibers, outputStyle: 'expanded' }))
-    .pipe(postCSS(settings.postCSSLayoutFix))
-    .pipe(dest('./resource/materials/css/', { sourcemaps: '../maps' }))
+    .pipe(postCss(setup.styles.postCssLayoutFix))
+    .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
 
 // Minify CSS.
 export const onCssmin = () => {
-  return src('./resource/materials/css/**/*.css')
-    .pipe(postCSS(settings.postCSSCacheBusting))
+  return src(setup.styles.inCss)
+    .pipe(postCss(setup.styles.postCssCacheBusting))
     .pipe(cssmin())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(dest('../delivery/assets/css/'))
+    .pipe(dest(setup.styles.outCss))
 }
 
-// Images Minify.
-export const onCompressionImages = () => {
-  return src(settings.inCompressionImages)
+// Convert to Webp.
+export const onWebps = () => {
+  return src(setup.images.inWebps).pipe(webp()).pipe(dest(setup.images.outWebps)).pipe(dest(setup.images.out))
+}
+
+// Minify Images.
+export const onMinifyImages = () => {
+  return src(setup.images.in)
     .pipe(plumber())
     .pipe(
       imagemin([
@@ -113,7 +141,7 @@ export const onCompressionImages = () => {
         imagemin.svgo({ plugins: [{ removeViewBox: true }, { cleanupIDs: false }] })
       ])
     )
-    .pipe(dest(settings.outCompressionImages))
+    .pipe(dest(setup.images.out))
 }
 
 // When Add site.webmanifest && browserconfig.xml. ( for Favicon. )
@@ -125,7 +153,7 @@ export const onManifest = () => {
 // When Add Favicon.
 export const onFavicon = () => {
   return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml']).pipe(
-    dest('../delivery/assets/favicons/')
+    dest(setup.favicons.out)
   )
 }
 
@@ -143,7 +171,7 @@ export const onDelete = (cb) => {
 // For When Building Manually, Delete Compiled Files Before Building. ( When Switching Working Branches. )
 export const onClean = () => {
   const cmd =
-    'npx rimraf ../delivery/assets ../delivery/site.webmanifest ../delivery/browserconfig.xml ../delivery/.htaccess ../delivery/.htpasswd resource/materials/css resource/materials/maps'
+    'npx rimraf ../delivery/assets ../delivery/site.webmanifest ../delivery/browserconfig.xml ../delivery/.htaccess ../delivery/.htpasswd resource/materials/css resource/materials/maps resource/materials/images/*.webp'
   return exec(cmd)
 }
 
@@ -165,7 +193,7 @@ export const onEcma = onWebpackDev
 export const onStyles = series(onSass, onCssmin)
 export const onBuild = series(
   onClean,
-  parallel(onWebpackPro, onStyles, onCompressionImages, (doneReport) => {
+  parallel(onWebpackPro, onStyles, onWebps, onMinifyImages, (doneReport) => {
     switches.json && onJson()
     switches.favicon && onManifest()
     switches.favicon && onFavicon()
@@ -176,12 +204,13 @@ export const onBuild = series(
 
 // When Developing, Build Automatically.
 exports.default = parallel(() => {
-  switches.ecma && watch(['./resource/base/**/*', './resource/types/**/*'], onEcma)
-  switches.json && watch('./resource/materials/json/*', onJson)
-  switches.styles && watch('./resource/styles/**/*.scss', onStyles)
-  switches.compressionImages && watch(settings.inCompressionImages, onCompressionImages)
-  switches.favicon && watch('./resource/materials/favicons/*', onManifest)
-  switches.favicon && watch('./resource/materials/favicons/*', onFavicon)
+  switches.ecma && watch([setup.ecmas.in, setup.ecmas.inTypes], onEcma)
+  switches.json && watch(setup.ecmas.inJson, onJson)
+  switches.styles && watch(setup.styles.inScss, onStyles)
+  switches.webps && watch(setup.images.inWebps, onWebps)
+  switches.minifyImages && watch(setup.images.in, onMinifyImages)
+  switches.favicon && watch(setup.favicons.in, onManifest)
+  switches.favicon && watch(setup.favicons.in, onFavicon)
   switches.rename && watch('**/*', onRename)
   switches.copy && onCopy()
 })
