@@ -14,9 +14,16 @@
   .heading02 {
     font-size: 3em;
     font-weight: 300;
+    line-height: 1.25;
+    text-align: center;
     transform: translateY(-100%);
+
     @include mixins.isLargeMobile {
       font-size: 4.8em
+    }
+
+    &.not-found {
+      transform: translateY(-50%);
     }
 
   }

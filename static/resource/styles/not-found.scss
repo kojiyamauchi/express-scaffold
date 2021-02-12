@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*==============================================================================
 
- Fourth Page SCSS.
+ Not Found Page SCSS.
 
  Currently, '@use' Doesn't Seem to Be Able to Use 'glob',
  Use '@import' in Some Cases on Entrypoint.
@@ -10,6 +10,6 @@
 @use "default";
 @use "utilities";
 @use "plugins/some-plugin";
-@use "components/pages/common/some-commons2";
+@use "components/pages/common/some-commons";
 @import "components/common/*";
-@import "components/pages/fourth/*";
+@import "components/pages/not-found/*";
