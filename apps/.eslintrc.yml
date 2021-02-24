@@ -3,6 +3,10 @@ env:
   node: true
   es6: true
   jest/globals: true
+globals:
+  page: true
+  browser: true
+  jestPuppeteer: true
 parser: '@typescript-eslint/parser'
 parserOptions:
   # When Use TypeScript, Setting of Root Dir. ( To Find for tsconfig.json )
