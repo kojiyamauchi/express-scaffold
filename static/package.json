@@ -155,7 +155,6 @@
     "lint": "eslint 'resource/**/*.{ts,js}' --max-warnings 0",
     "lint:fix": "eslint --fix 'resource/**/*.{ts,js}' --max-warnings 0",
     "stylelint": "stylelint 'resource/**/*.scss'",
-    "jest": "jest --passWithNoTests",
-    "re-install": "rm yarn.lock && rm -rf node_modules && yarn install"
+    "jest": "jest --passWithNoTests"
   }
 }
