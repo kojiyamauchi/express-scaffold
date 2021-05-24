@@ -15,7 +15,7 @@ const app = express()
 
 // Looking Root.
 const root = path.resolve(`${__dirname}/` + '../../delivery/')
-console.log('Looking Delivery Dir From App.ts\n', root)
+console.info('Looking Delivery Dir From App.ts\n', root)
 
 // Root Setup.
 app.use(express.static(root))

@@ -7,7 +7,7 @@ import https from 'https'
 import http from 'http'
 const env = app.get('env')
 const server = http.createServer(app)
-server.listen(3000, () => console.log('Http Application Started'))
+server.listen(3000, () => console.info('Http Application Started'))
 */
 
 const setupHttps = {
@@ -15,4 +15,4 @@ const setupHttps = {
   cert: fs.readFileSync(path.resolve(__dirname, '../server.cert'))
 }
 const server = https.createServer(setupHttps, app)
-server.listen(3000, () => console.log('Https Application Started.'))
+server.listen(3000, () => console.info('Https Application Started.'))
