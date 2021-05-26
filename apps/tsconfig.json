@@ -29,6 +29,6 @@
     "outDir": "./build",
     "paths": { "@/*": ["./resource/*"] }
   },
-  "include": ["**/*.ts"],
+  "include": ["resource/**/*.ts"],
   "exclude": ["node_modules"]
 }
