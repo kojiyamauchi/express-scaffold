@@ -7,7 +7,7 @@
   justify-content: center;
   width: 100%;
 
-  @include mixins.isLargeMobile {}
+  @include mixins.aboveLargeMobile {}
 
   // scoped.
 
@@ -18,7 +18,7 @@
     text-align: center;
     transform: translateY(-100%);
 
-    @include mixins.isLargeMobile {
+    @include mixins.aboveLargeMobile {
       font-size: 4.8em
     }
 
