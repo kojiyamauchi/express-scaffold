@@ -51,7 +51,6 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-webpack-plugin": "^2.5.4",
     "exports-loader": "3.0.0",
-    "fibers": "^5.0.0",
     "fork-ts-checker-notifier-webpack-plugin": "^4.0.0",
     "fork-ts-checker-webpack-plugin": "^6.2.10",
     "glob": "^7.1.7",
