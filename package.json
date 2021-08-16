@@ -39,6 +39,7 @@
     "stylelint": "npm-run-all -p static:stylelint",
     "jest": "npm-run-all -p apps:jest static:jest",
     "serve": "yarn workspace apps serve",
-    "serve:local": "yarn workspace apps serve:local"
+    "serve:local": "yarn workspace apps serve:local",
+    "module-update": "yarn upgrade-interactive --latest"
   }
 }
