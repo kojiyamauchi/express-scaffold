@@ -107,10 +107,10 @@ export const onJson = () => {
 export const onSass = () => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
     .pipe(plumber({ errorHandler: notify.onError({ message: 'SCSS Compile Error: <%= error.message %>', onLast: true }) }))
-    .pipe(stylelint({ reporters: [{ formatter: 'string', console: true }] }))
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
     .pipe(sass.sync({ outputStyle: 'expanded' }))
     .pipe(postCss(setup.styles.postCssLayoutFix))
+    .pipe(stylelint({ reporters: [{ formatter: 'string', console: true }], fix: true }))
     .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
 
