@@ -17,6 +17,7 @@
     "target": "es5",
     "module": "commonjs",
     "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
@@ -27,7 +28,10 @@
     "isolatedModules": false,
     "baseUrl": ".",
     "outDir": "./build",
-    "paths": { "@/*": ["./resource/*"] }
+    "paths": {
+      "@/*": ["./resource/*"],
+      "node-fetch": ["./resource/types/@types/node-fetch.d.ts"]
+    }
   },
   "include": ["resource/**/*.ts"],
   "exclude": ["node_modules"]
