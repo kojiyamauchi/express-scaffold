@@ -1,9 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express'
-import path from 'path'
 import cookieParser from 'cookie-parser'
+import express, { NextFunction, Request, Response } from 'express'
 import session from 'express-session'
-import logger from 'morgan'
 import createError from 'http-errors'
+import logger from 'morgan'
+import path from 'path'
+
 import { routes } from './routes'
 
 type ErrorType = {
@@ -12,6 +13,7 @@ type ErrorType = {
 }
 
 const app = express()
+app.disable('x-powered-by')
 
 // Looking Root.
 const root = path.resolve(`${__dirname}/` + '../../delivery/')
