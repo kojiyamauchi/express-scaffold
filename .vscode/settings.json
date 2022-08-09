@@ -1,5 +1,5 @@
 {
-  "eslint.workingDirectories": ["./apps", "./static"],
+  "eslint.workingDirectories": ["./apps", "./client"],
   "css.validate": false,
   "scss.validate": false,
   "editor.codeActionsOnSave": {
