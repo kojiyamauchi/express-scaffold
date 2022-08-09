@@ -1,0 +1,52 @@
+version: 0.2
+language: en
+words:
+  - browserconfig
+  - cachebuster
+  - callout
+  - corejs
+  - cssmin
+  - ecmas
+  - esbenp
+  - favicons
+  - flexbugs
+  - foruth
+  - gifsicle
+  - htpasswd
+  - Kaku
+  - kojiyamauchi
+  - lazysizes
+  - mozjpeg
+  - msapplication
+  - mstile
+  - navi
+  - nofilter
+  - noreferrer
+  - peaceiris
+  - pngquant
+  - resave
+  - reviewdog
+  - Sitename
+  - stylelint
+  - stylesheet
+  - swiper
+  - TYPECHECK
+  - unfetch
+  - webp
+  - webps
+  - whatwg
+  - workdir
+flagWords:
+  - hte
+ignorePaths:
+  - ./**/node_modules/**
+  - delivery/**
+  - apps/build/**
+  - ./**/*/*.webp
+  - ./**/*/*.svg
+  - .git/**
+  - .husky/**
+  - .history/**
+  - yarn.lock
+  - tsconfig.tsbuildinfo
+  - cspell.yml

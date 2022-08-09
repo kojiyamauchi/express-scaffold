@@ -7,3 +7,4 @@ static/**/*.ts:
   - yarn workspace static eslint --fix --max-warnings 0
 static/**/*.js: yarn workspace static prettier --write
 static/resource/**/*.scss: yarn workspace static stylelint --fix
+./**/*: cspell --dot --no-must-find-files
