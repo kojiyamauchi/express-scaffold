@@ -111,11 +111,11 @@ module.exports = {
       }
     }),
     // Notify Desktop When a TypeScript Error.
-    new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript | Static' }),
+    new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript | Client' }),
     // ESLint on webpack.
     new ESLintPlugin({ files: [path.resolve(__dirname, '../resource/**/*.{ts,tsx,js,jsx}')], failOnWarning: true }),
     // Notify Desktop When a ESLint or Webpack Build Error.
-    new WebpackNotifierPlugin({ title: 'ESLint or Webpack Build | Static' })
+    new WebpackNotifierPlugin({ title: 'ESLint or Webpack Build | Client' })
   ],
 
   // Setting for Warning on Terminal.

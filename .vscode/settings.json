@@ -1,5 +1,5 @@
 {
-  "eslint.workingDirectories": ["./apps", "./static"],
+  "eslint.workingDirectories": ["./apps", "./client"],
   "css.validate": false,
   "scss.validate": false,
   "editor.codeActionsOnSave": {
@@ -10,5 +10,9 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
-  "[scss]": { "editor.formatOnSave": false }
+  "[scss]": {
+    "editor.formatOnSave": false
+  },
+  "stylelint.validate": ["css", "scss"],
+  "cSpell.enabled": true
 }

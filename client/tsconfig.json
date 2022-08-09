@@ -17,6 +17,7 @@
     "target": "esnext",
     "module": "esnext",
     "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
@@ -30,6 +31,6 @@
     "outDir": "./delivery/assets/js",
     "paths": { "@/*": ["./resource/base/*"] }
   },
-  "include": ["**/*.ts"],
+  "include": ["./**/**/*.ts"],
   "exclude": ["node_modules"]
 }
