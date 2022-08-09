@@ -9,36 +9,42 @@
   "workspaces": {
     "packages": [
       "apps",
-      "static"
+      "client"
     ],
     "nohoist": []
   },
   "devDependencies": {
-    "husky": "7.0.4",
-    "lint-staged": "^12.1.2",
+    "cspell": "^6.6.0",
+    "husky": "8.0.1",
+    "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5"
   },
   "scripts": {
     "prepare": "husky install",
-    "apps:dev": "yarn workspace apps dev",
-    "apps:build": "yarn workspace apps build",
-    "apps:clean": "yarn workspace apps clean",
-    "apps:lint": "yarn workspace apps lint",
-    "apps:jest": "yarn workspace apps jest",
-    "static:dev": "yarn workspace static dev",
-    "static:build": "yarn workspace static build",
-    "static:clean": "yarn workspace static clean",
-    "static:lint": "yarn workspace static lint",
-    "static:stylelint": "yarn workspace static stylelint",
-    "static:jest": "yarn workspace static jest",
-    "dev": "npm-run-all -p apps:dev static:dev",
-    "build": "npm-run-all -p apps:build static:build",
-    "clean": "npm-run-all -p apps:clean static:clean",
-    "lint": "npm-run-all -p apps:lint static:lint",
-    "stylelint": "npm-run-all -p static:stylelint",
-    "jest": "npm-run-all -p apps:jest static:jest",
+    "dev:apps": "yarn workspace apps dev",
+    "build:apps": "yarn workspace apps build",
+    "clean:apps": "yarn workspace apps clean",
+    "lint:apps": "yarn workspace apps lint",
+    "lint:fix:apps": "yarn workspace apps lint:fix",
+    "jest:apps": "yarn workspace apps jest",
+    "typecheck:apps": "yarn workspace apps tsc --noEmit",
+    "dev:client": "yarn workspace client dev",
+    "build:client": "yarn workspace client build",
+    "clean:client": "yarn workspace client clean",
+    "lint:client": "yarn workspace client lint",
+    "lint:fix:client": "yarn workspace client lint:fix",
+    "jest:client": "yarn workspace client jest",
+    "typecheck:client": "yarn workspace client tsc --noEmit",
+    "dev": "run-p dev:apps dev:client",
+    "build": "run-p build:apps build:client",
+    "clean": "run-p clean:apps clean:client",
+    "lint": "run-p lint:apps lint:client",
+    "lint:fix": "run-p lint:fix:apps lint:fix:client",
+    "stylelint": "yarn workspace client stylelint",
+    "jest": "run-p jest:apps jest:client",
+    "typecheck": "run-p typecheck:apps typecheck:client",
     "serve": "yarn workspace apps serve",
     "serve:local": "yarn workspace apps serve:local",
-    "module-update": "yarn upgrade-interactive --latest"
+    "ui": "yarn upgrade-interactive --latest"
   }
 }
