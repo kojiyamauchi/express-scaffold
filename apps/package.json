@@ -51,8 +51,7 @@
   },
   "scripts": {
     "setup:browser": "wait-on https://localhost:3000 && browser-sync start --config bs-config.js",
-    "setup:dev": "nodemon",
-    "dev": "run-p setup:browser setup:dev",
+    "dev": "run-p setup:browser nodemon",
     "build": "tsc && cp -r resource/views build",
     "serve": "NODE_ENV=production node build/serve.js",
     "serve:local": "run-p setup:browser serve",

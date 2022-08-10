@@ -98,7 +98,6 @@
     "webpack-stream": "^7.0.0"
   },
   "scripts": {
-    "setup": "rm -rf .git",
     "dev": "gulp",
     "build": "gulp onBuild",
     "clean": "gulp onClean",
