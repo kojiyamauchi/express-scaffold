@@ -6,6 +6,7 @@ ssl:
 
 .PHONY: build
 build:
+	yarn build:client
 	docker compose build
 
 .PHONY: up
