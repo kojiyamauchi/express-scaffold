@@ -1,0 +1,108 @@
+@charset "UTF-8";
+@use "../../../mixins";
+
+.component-user-list {
+  width: 100%;
+  padding: 0 0 20px;
+  overflow: hidden;
+  overflow-x: scroll;
+  @include mixins.aboveLargeMobile {
+    max-width: 750px;
+  }
+
+  // scoped.
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 750px;
+    padding: 0 20px;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 20px;
+    @include mixins.aboveLargeMobile {
+    }
+
+    > * {
+      font-weight: bold;
+    }
+  }
+
+  .item {
+    display: block;
+    width: 100%;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .anchor {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 20px;
+
+    @include mixins.aboveLargeMobile {
+      &:hover {
+        background-color: #f8badb;
+      }
+    }
+  }
+
+  .letter {
+    font-size: 14px;
+
+    &.id {
+      width: 35px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.name {
+      width: 105px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.url {
+      width: 105px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.phone {
+      width: 95px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.email {
+      width: 125px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.create-at {
+      width: 125px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+
+    &.update-at {
+      width: 120px;
+      @include mixins.aboveLargeMobile {
+      }
+    }
+    @include mixins.aboveLargeMobile {
+    }
+  }
+}

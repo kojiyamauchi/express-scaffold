@@ -1,0 +1,12 @@
+<form action="?" method="post" class="component-user-form">
+  <div class="form-wrapper">
+    <%- include ('../../common/_input-text', { label: "NAME", name: "name", value: user.name }) %>
+    <%- include ('../../common/_input-text', { label: "WEB", name: "url", value: user.url }) %>
+    <%- include ('../../common/_input-phone', { value1: user.phone1, value2: user.phone2, value3: user.phone3 }) %>
+    <%- include ('../../common/_input-email', { value: user.email }) %>
+  </div>
+  <div class="button-wrapper">
+    <%- include ('../../common/_submit', { letter: "UPDATE", id: user.id }) %>
+    <%- include ('../../common/_submit', { letter: "DELETE", id: user.id }) %>
+  </div>
+</form>

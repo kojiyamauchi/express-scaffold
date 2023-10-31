@@ -1,0 +1,54 @@
+<%
+props = {
+  title: 'Insert User Page | Express Scaffold',
+  description : 'Insert User Page | Express Scaffold.',
+  ogp: true,
+  ogpURL: 'Add OGP URL.',
+  ogpSitename: 'Add OGP Site Name.',
+  ogpTitle: 'Add OGP Title.',
+  ogpDescription: 'Add OGP Description.',
+  ogpImage: 'Add OGP Images File Path.',
+  favicon: true,
+  cssPlugins: false,
+  cssCoreFile: 'insert-user',
+  ecmaPolyfill: false,
+  ecmaModules: false,
+  ecmaGlobal: true,
+  ecmaCore: 'core',
+  pages: 'insert-user',
+  redirect: false
+}
+%>
+<!DOCTYPE html>
+<html lang="ja">
+  <!-- Head -->
+  <head>
+    <%- include ('../components/common/_head') %>
+    <%- include ('../components/common/_css') %>
+  </head>
+  <!-- /Head -->
+  <body class="<%= props.pages %>">
+    <!-- Header -->
+    <%- include ('../components/common/_header') %>
+    <!-- /Header -->
+    <!-- Navigation -->
+    <%- include ('../components/common/_navigation') %>
+    <!-- /Navigation -->
+    <!-- Main Contents -->
+    <main>
+      <!-- Heading -->
+      <%- include ('../components/common/_heading', { className: props.pages, heading: heading }) %>
+      <!-- /Heading -->
+      <!-- Form -->
+      <%- include ('../components/pages/insert-user/_form') %>
+      <!-- /Form -->
+    </main>
+    <!-- /Main Contents -->
+    <!-- Footer -->
+    <%- include ('../components/common/_footer') %>
+    <!-- /Footer -->
+    <!-- JavaScript -->
+    <%- include ('../components/common/_js') %>
+    <!-- /JavaScript -->
+  </body>
+</html>

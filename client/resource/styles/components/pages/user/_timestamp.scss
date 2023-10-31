@@ -1,0 +1,40 @@
+@charset "UTF-8";
+@use "../../../mixins";
+
+.component-timestamp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 0 10px;
+  @include mixins.aboveLargeMobile {
+  }
+
+  // scoped.
+
+  .list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .term {
+    font-size: 12px;
+    font-weight: bold;
+    @include mixins.aboveLargeMobile {
+      font-size: 14px;
+    }
+  }
+
+  .description {
+    font-size: 12px;
+    font-weight: bold;
+    @include mixins.aboveLargeMobile {
+      font-size: 14px;
+    }
+  }
+}

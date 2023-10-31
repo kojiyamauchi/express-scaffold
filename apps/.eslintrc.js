@@ -42,12 +42,6 @@ module.exports = {
         varsIgnorePattern: '^AddIgnoreVariables'
       }
     ],
-    '@typescript-eslint/no-implicit-any-catch': [
-      'error',
-      {
-        allowExplicitAny: true
-      }
-    ],
     'max-classes-per-file': ['error', 2],
     'no-bitwise': [
       'error',

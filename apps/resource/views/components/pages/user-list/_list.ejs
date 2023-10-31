@@ -1,0 +1,26 @@
+<div class="component-user-list">
+  <ul class="list">
+    <li class="header">
+      <span class="letter id">No.</span>
+      <span class="letter name">NAME</span>
+      <span class="letter url">WEB</span>
+      <span class="letter phone">PHONE</span>
+      <span class="letter email">E-MAIL</span>
+      <span class="letter create-at">CREATE AT</span>
+      <span class="letter update-at">UPDATE AT</span>
+    </li>
+    <% userList.forEach((user, index) => {%>
+      <li class="item item-<%= user.id %>">
+        <a href="/user/<%= user.id %>" class="anchor">
+          <span class="letter id"><%= user.id %>.</span>
+          <span class="letter name"><%= user.name %></span>
+          <span class="letter url"><%= user.url %></span>
+          <span class="letter phone"><%= user.phone %></span>
+          <span class="letter email"><%= user.email %></span>
+          <span class="letter create-at"><%= user.create_at %></span>
+          <span class="letter update-at"><%= user.update_at %></span>
+        </a>
+      </li>
+    <%})%>
+</ul>
+</div>

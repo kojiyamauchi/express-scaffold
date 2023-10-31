@@ -12,4 +12,7 @@ apps/server.cert
 apps/server.key
 .github/workflows/delivery.yml
 */_.eslintrc.yml
+mysql/*
+!mysql/.gitkeep
+.env
 

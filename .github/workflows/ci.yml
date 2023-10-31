@@ -5,7 +5,7 @@ on:
     branches: develop
 
 env:
-  NODE_VERSION: 16.x
+  NODE_VERSION: 18.x
   LAUNCH_CSPELL: off # Launch CSpell. [ on, off ]
   LAUNCH_ESLINT: off # Launch ESLint. [ on, off ]
   LAUNCH_STYLELINT: off # Launch Stylelint. [ on, off ]

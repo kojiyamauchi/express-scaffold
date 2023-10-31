@@ -1,0 +1,39 @@
+@charset "UTF-8";
+@use "../../../mixins";
+
+.component-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 20px 30px;
+  @include mixins.aboveLargeMobile {
+    max-width: 400px;
+  }
+
+  // scoped.
+
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .button-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+}

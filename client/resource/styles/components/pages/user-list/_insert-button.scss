@@ -1,0 +1,29 @@
+@charset "UTF-8";
+@use "../../../mixins";
+
+.component-insert-button {
+  position: fixed;
+  right: 10px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #b14285;
+  text-align: center;
+  background-color: #f8badb;
+  border: solid 2px #b14285;
+  border-radius: 30px;
+  @include mixins.aboveLargeMobile {
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    font-size: 16px;
+    border-radius: 40px;
+  }
+
+  // scoped.
+}

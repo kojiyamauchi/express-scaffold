@@ -7,7 +7,8 @@
   justify-content: center;
   width: 100%;
 
-  @include mixins.aboveLargeMobile {}
+  @include mixins.aboveLargeMobile {
+  }
 
   // scoped.
 
@@ -19,13 +20,19 @@
     transform: translateY(-100%);
 
     @include mixins.aboveLargeMobile {
-      font-size: 4.8em
+      font-size: 4.8em;
     }
 
-    &.not-found {
+    &.not-found,
+    &.server-error {
       transform: translateY(-50%);
     }
 
+    &.user-list,
+    &.user,
+    &.insert-user {
+      padding: 10px 0;
+      transform: none;
+    }
   }
-
 }

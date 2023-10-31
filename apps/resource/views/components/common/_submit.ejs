@@ -1,0 +1,12 @@
+<button
+  type="submit"
+  <% if (letter === 'UPDATE') {%>
+    formaction="/api/user/<%= id %>?_method=PUT"
+  <%} else if (letter === 'DELETE') {%>
+    formaction="/api/user/<%= id %>?_method=DELETE"
+  <%} else {%> 
+    formaction="/api/user"
+  <%}%>
+  class="component-submit">
+  <%- letter %>
+</button>

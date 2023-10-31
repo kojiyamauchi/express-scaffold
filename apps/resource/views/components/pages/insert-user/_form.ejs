@@ -1,0 +1,11 @@
+<form action="" method="post" class="component-insert-user-form">
+  <div class="form-wrapper">
+    <%- include ('../../common/_input-text', { label: "NAME", name: "name", value: "" }) %>
+    <%- include ('../../common/_input-text', { label: "WEB", name: "url", value: "" }) %>
+    <%- include ('../../common/_input-phone', { value1: "", value2: "", value3: "" }) %>
+    <%- include ('../../common/_input-email', { value: "" }) %>
+  </div>
+  <div class="button-wrapper">
+    <%- include ('../../common/_submit', { letter: "INSERT", id: "" }) %>
+  </div>
+</form>

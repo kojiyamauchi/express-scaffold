@@ -10,7 +10,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
-  "[scss]": {
+  "[html]": {
+    // Don't use prettier for EJS.
     "editor.formatOnSave": false
   },
   "stylelint.validate": ["css", "scss"],

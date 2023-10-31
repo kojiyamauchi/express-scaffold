@@ -1,22 +1,22 @@
 {
-  "name": "express-mvc-scaffold",
+  "name": "express-scaffold",
   "version": "1.0.0",
-  "description": "This is Express MVC Scaffold.",
+  "description": "This is Express Scaffold.",
   "main": "index.js",
   "repository": "git@github.com:kojiyamauchi/express-mvc-scaffold.git",
   "license": "MIT",
   "private": true,
   "workspaces": {
     "packages": [
-      "apps",
-      "client"
+      "./apps",
+      "./client"
     ],
     "nohoist": []
   },
   "devDependencies": {
-    "cspell": "^6.6.0",
-    "husky": "8.0.1",
-    "lint-staged": "^13.0.3",
+    "cspell": "^7.3.7",
+    "husky": "8.0.3",
+    "lint-staged": "^14.0.1",
     "npm-run-all": "^4.1.5"
   },
   "scripts": {
@@ -44,6 +44,7 @@
     "stylelint": "yarn workspace client stylelint",
     "jest": "run-p jest:*",
     "typecheck": "run-p typecheck:*",
+    "spellcheck": "yarn cspell --dot --no-must-find-files '**/*'",
     "serve": "yarn workspace apps serve",
     "serve:local": "yarn workspace apps serve:local",
     "ui": "yarn upgrade-interactive --latest"

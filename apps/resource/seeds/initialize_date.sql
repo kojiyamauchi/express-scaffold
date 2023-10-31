@@ -1,0 +1,3 @@
+UPDATE User
+SET create_at = CURRENT_TIMESTAMP,
+    update_at = CURRENT_TIMESTAMP;

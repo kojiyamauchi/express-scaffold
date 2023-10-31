@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser'
 import express, { NextFunction, Request, Response } from 'express'
 import session from 'express-session'
 import createError from 'http-errors'
+import methodOverride from 'method-override'
 import logger from 'morgan'
 import path from 'path'
 
@@ -15,12 +16,15 @@ type ErrorType = {
 const app = express()
 app.disable('x-powered-by')
 
-// Looking Root.
-const root = path.resolve(`${__dirname}/` + '../../delivery/')
-console.info('Looking Delivery Dir From App.ts\n', root)
+// Looking For Delivery Dir.
+const deliveryDir = path.resolve(`${__dirname}/` + '../../delivery/')
+console.info('Looking Delivery Dir From App.ts\n', deliveryDir)
 
 // Root Setup.
-app.use(express.static(root))
+app.use(express.static(deliveryDir))
+
+// Use PUT and DELETE Method For Template Form.
+app.use(methodOverride('_method'))
 
 // View Engine Setup.
 app.set('views', path.join(__dirname, 'views'))
@@ -56,10 +60,16 @@ app.use((req, res, next) => {
 })
 
 // Rooter.
+/* View */
 app.use('/', routes.primary)
 app.use('/secondary', routes.secondary)
 app.use('/third', routes.third)
-app.use('/fourth', routes.fourth)
+app.use('/user-list', routes.userList)
+app.use('/user/:id', routes.user)
+app.use('/insert-user', routes.insertUser)
+/* API */
+app.use('/api/user', routes.insert)
+app.use('/api/user/:id', [routes.update, routes.delete])
 
 // Catch 404 and Forward to Error Handler
 app.use((_req, _res, next) => next(createError(404)))

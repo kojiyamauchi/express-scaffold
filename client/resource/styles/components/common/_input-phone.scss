@@ -1,0 +1,63 @@
+@charset "UTF-8";
+@use "../../mixins";
+
+.component-input-phone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  @include mixins.aboveLargeMobile {
+  }
+
+  // scoped.
+
+  .term {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0 0 6px;
+    font-size: 18px;
+    font-weight: bold;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .description {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+
+  .input {
+    width: 100%;
+    height: 35px;
+    padding: 0 10px;
+    font-size: 16px;
+    color: #777;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: solid 2px #ccc;
+    border-radius: 6px;
+    @include mixins.aboveLargeMobile {
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+  }
+
+  .hyphen {
+    font-size: 28px;
+    font-weight: bold;
+    @include mixins.aboveLargeMobile {
+    }
+  }
+}

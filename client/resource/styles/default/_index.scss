@@ -135,11 +135,11 @@ input[type="submit"],
 input[type="text"],
 select,
 button {
-  background-color: transparent;
-  border-radius: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background-color: transparent;
+  border-radius: 0;
 
   &:focus {
     outline: none;
@@ -147,11 +147,11 @@ button {
 }
 
 textarea {
-  resize: vertical;
-  border-radius: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  resize: vertical;
+  border-radius: 0;
 }
 
 ::selection {
@@ -195,8 +195,17 @@ body {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  font-family: "Source Sans Pro", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN", "游ゴシック Medium", meiryo, sans-serif;
+  font-family:
+    "Source Sans Pro",
+    "Noto Sans JP",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "游ゴシック Medium",
+    meiryo,
+    sans-serif;
   line-height: 1;
   color: #777;
   letter-spacing: 0;

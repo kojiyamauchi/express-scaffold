@@ -1,0 +1,19 @@
+@charset "UTF-8";
+@use "../../mixins";
+
+.component-submit {
+  width: 100%;
+  height: 35px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #b14285;
+  text-align: center;
+  background-color: #f8badb;
+  border: solid 2px #b14285;
+  border-radius: 6px;
+  @include mixins.aboveLargeMobile {
+    font-size: 16px;
+  }
+
+  // scoped.
+}
