@@ -5,7 +5,7 @@ on:
     branches: main
 
 env:
-  NODE_VERSION: 18.17.*
+  NODE_VERSION: 18.*
   LAUNCH_CSPELL: on # Launch CSpell. [ on, off ]
   LAUNCH_ESLINT: on # Launch ESLint. [ on, off ]
   LAUNCH_STYLELINT: on # Launch Stylelint. [ on, off ]
@@ -206,4 +206,4 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: Do Build Test
         if: env.LAUNCH_BUILD == 'on'
-        run: yarn build:apps
+        run: yarn build

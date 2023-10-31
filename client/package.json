@@ -51,7 +51,7 @@
     "exports-loader": "4.0.0",
     "fork-ts-checker-notifier-webpack-plugin": "^7.0.0",
     "fork-ts-checker-webpack-plugin": "^9.0.0",
-    "glob": "^8.1.0",
+    "glob": "^10.3.10",
     "gulp": "^4.0.2",
     "gulp-cssmin": "^0.2.0",
     "gulp-if": "^3.0.0",
