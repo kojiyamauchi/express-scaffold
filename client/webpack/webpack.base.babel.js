@@ -4,7 +4,7 @@
 
 import webpack from 'webpack'
 import path from 'path'
-import { globSync } from 'glob'
+import glob from 'glob'
 import ForkTsChecker from 'fork-ts-checker-webpack-plugin'
 import ForkTsCheckerNotifierWebpackPlugin from 'fork-ts-checker-notifier-webpack-plugin'
 import ESLintPlugin from 'eslint-webpack-plugin'
@@ -15,7 +15,7 @@ const baseDir = './resource/base/'
 const entries = {}
 const splitChunksIgnore = []
 const entryPointIgnore = []
-globSync('*.js', { cwd: baseDir }).forEach((info) => (entries[info.replace('.js', '')] = baseDir + info))
+glob.sync('*.js', { cwd: baseDir }).forEach((info) => (entries[info.replace('.js', '')] = baseDir + info))
 entryPointIgnore.forEach((info) => delete entries[info])
 
 // Setting Start.
