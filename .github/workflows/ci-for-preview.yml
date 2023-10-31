@@ -5,7 +5,7 @@ on:
     branches: main
 
 env:
-  NODE_VERSION: 18.x
+  NODE_VERSION: 18.17.*
   LAUNCH_CSPELL: on # Launch CSpell. [ on, off ]
   LAUNCH_ESLINT: on # Launch ESLint. [ on, off ]
   LAUNCH_STYLELINT: on # Launch Stylelint. [ on, off ]
