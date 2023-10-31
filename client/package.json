@@ -98,6 +98,9 @@
     "webpack-notifier": "^1.15.0",
     "webpack-stream": "^7.0.0"
   },
+  "resolutions": {
+    "glob": "^10.3.10"
+  },
   "scripts": {
     "dev": "gulp",
     "build": "gulp onBuild",
