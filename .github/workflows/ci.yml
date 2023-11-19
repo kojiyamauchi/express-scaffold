@@ -235,6 +235,9 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Install Global Gulp For Client.
+        if: env.LAUNCH_BUILD == 'on'
+        run: yarn workspace client add global gulp-cli
       - name: Do Build Test
         if: env.LAUNCH_BUILD == 'on'
         run: yarn build
