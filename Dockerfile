@@ -21,6 +21,7 @@ RUN apk --update add --no-cache pkgconfig \
     nasm \
     build-base \
     zlib-dev
-RUN yarn
+RUN yarn workspace client add global gulp-cli \
+    && yarn
 EXPOSE 3000 8000 9999
 CMD ["yarn", "dev"]
