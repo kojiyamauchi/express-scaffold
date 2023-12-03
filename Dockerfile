@@ -1,5 +1,5 @@
 FROM node:18.18.1-alpine3.18
-WORKDIR /application 
+WORKDIR /application
 
 COPY ./package.json ./
 COPY ./yarn.lock ./
@@ -22,5 +22,5 @@ RUN apk --update add --no-cache pkgconfig \
     build-base \
     zlib-dev
 RUN yarn
-EXPOSE 3000 8080 8888
+EXPOSE 3000 8000 9999
 CMD ["yarn", "dev"]
