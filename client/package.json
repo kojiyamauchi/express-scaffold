@@ -9,7 +9,8 @@
   "private": true,
   "dependencies": {
     "core-js": "3.33.0",
-    "global": "^4.4.0"
+    "global": "^4.4.0",
+    "gulp-cli": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
