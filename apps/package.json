@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Application Layer For Express Scaffold.",
   "main": "index.js",
-  "repository": "git@github.com:kojiyamauchi/express-mvc-scaffold.git",
+  "repository": "git@github.com:kojiyamauchi/express-scaffold.git",
   "license": "MIT",
   "private": true,
   "dependencies": {

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "description": "Client Layer For Express Scaffold.",
-  "repository": "git@github.com:kojiyamauchi/express-mvc-scaffold.git",
+  "repository": "git@github.com:kojiyamauchi/express-scaffold.git",
   "author": "kojiyamauchi <all.the.small.things@me.com>",
   "version": "1.0.0",
   "main": "index.js",
