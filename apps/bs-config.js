@@ -8,10 +8,10 @@ module.exports = {
   proxy: {
     target: 'https://localhost:3000'
   },
-  port: 8080,
+  port: 8000,
   browser: 'google chrome canary',
-  reloadDelay: 7500, // Dockerで動かすとコンパイルが遅すぎてリロードが間に合わない
+  reloadDelay: 10000, // TODO: PC買い替えて確認する
   ui: {
-    port: 8888
+    port: 9999
   }
 }
