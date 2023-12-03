@@ -1,0 +1,7 @@
+**/node_modules
+**/.gitkeep
+apps/resource/tests
+client/resource/tests
+**/.prettierrc.yml
+**/.prettierignore
+**/.editorconfig

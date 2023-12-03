@@ -10,16 +10,22 @@ words:
   - esbenp
   - favicons
   - flexbugs
+  - formaction
   - foruth
   - gifsicle
   - htpasswd
   - Kaku
   - kojiyamauchi
   - lazysizes
+  - legacywatch
+  - maxlength
+  - minlength
   - mozjpeg
   - msapplication
   - mstile
+  - mysqld
   - navi
+  - nbsp
   - nofilter
   - noreferrer
   - peaceiris
@@ -50,3 +56,9 @@ ignorePaths:
   - yarn.lock
   - tsconfig.tsbuildinfo
   - cspell.yml
+  - ./**/*/Makefile
+  - ./**/*/Dockerfile
+  - ./**/*/docker-compose.yml
+  - ./**/*/.dockerignore
+  - ./mysql/**
+  - ./**/*/my.cnf

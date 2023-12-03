@@ -10,6 +10,10 @@ client/resource/materials/maps
 client/resource/materials/images/*.webp
 apps/server.cert
 apps/server.key
+apps/server.csr
 .github/workflows/delivery.yml
 */_.eslintrc.yml
+mysql/*
+!mysql/.gitkeep
+.env
 

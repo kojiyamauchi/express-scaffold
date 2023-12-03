@@ -1,7 +1,7 @@
 <%
 props = {
-  title: 'Fourth Page | Express MVC Scaffold',
-  description : 'Fourth Page | This is Express MVC Scaffold.',
+  title: 'User List Page | Express Scaffold',
+  description : 'User List Page | Express Scaffold.',
   ogp: true,
   ogpURL: 'Add OGP URL.',
   ogpSitename: 'Add OGP Site Name.',
@@ -10,12 +10,12 @@ props = {
   ogpImage: 'Add OGP Images File Path.',
   favicon: true,
   cssPlugins: false,
-  cssCoreFile: 'fourth',
+  cssCoreFile: 'user-list',
   ecmaPolyfill: false,
   ecmaModules: false,
   ecmaGlobal: true,
   ecmaCore: 'core',
-  pages: 'foruth',
+  pages: 'user-list',
   redirect: false
 }
 %>
@@ -39,8 +39,14 @@ props = {
       <!-- Heading -->
       <%- include ('../components/common/_heading', { className: props.pages, heading: heading }) %>
       <!-- /Heading -->
+      <!-- User List -->
+      <%- include ('../components/pages/user-list/_list.ejs', { userList: userList }) %>
+      <!-- /User List -->
     </main>
     <!-- /Main Contents -->
+    <!-- Insert Button -->
+    <%- include ('../components/pages/user-list/_insert-button.ejs') %>
+    <!-- /Insert Button -->
     <!-- Footer -->
     <%- include ('../components/common/_footer') %>
     <!-- /Footer -->

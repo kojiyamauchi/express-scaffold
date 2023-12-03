@@ -33,6 +33,6 @@
       "node-fetch": ["./resource/types/@types/node-fetch.d.ts"]
     }
   },
-  "include": ["./resource/**/*.ts", "jest.config.ts"],
+  "include": ["./resource/**/*.ts", "./jest.config.ts"],
   "exclude": ["node_modules"]
 }

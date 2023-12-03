@@ -1,3 +1,3 @@
-*.scss # This Setting Alone Will Format .scss, So Use vscode's setting.json to Ignore It. (.scss is stylelint only)
 *.html
+*.ejs
 node_modules
