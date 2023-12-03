@@ -1,5 +1,7 @@
 name: CI Local Test
 
+on:
+
 env:
   NODE_VERSION: 18.*
 
