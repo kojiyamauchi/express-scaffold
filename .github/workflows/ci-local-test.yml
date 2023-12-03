@@ -1,16 +1,7 @@
 name: CI Local Test
-on:
-  pull_request:
-    types: synchronize
-    branches: main
 
 env:
   NODE_VERSION: 18.*
-  LAUNCH_CSPELL: on # Launch CSpell. [ on, off ]
-  LAUNCH_ESLINT: on # Launch ESLint. [ on, off ]
-  LAUNCH_STYLELINT: on # Launch Stylelint. [ on, off ]
-  LAUNCH_TYPECHECK: on # Launch tsc. [ on, off ]
-  LAUNCH_BUILD: on # Launch Build. [ on, off ]
 
 jobs:
   setup:
@@ -54,14 +45,12 @@ jobs:
         with:
           reviewdog_version: latest
       - name: Do CSpell
-        if: env.LAUNCH_CSPELL == 'on'
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           yarn cspell --dot --no-must-find-files "**/*" \
           | reviewdog -level=warning -efm="%f:%l:%c - %m" -reporter=github-pr-review
       - name: Displayed CSpell Failure on Checks
-        if: env.LAUNCH_CSPELL == 'on'
         run: yarn cspell --dot --no-must-find-files "**/*"
 
   eslint:
@@ -81,14 +70,12 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: Do ESLint
-        if: env.LAUNCH_ESLINT == 'on'
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           eslint_flags: "./**/*.{ts,js}"
       - name: Displayed ESLINT Failure on Checks
-        if: env.LAUNCH_ESLINT == 'on'
         run: yarn lint
 
   stylelint:
@@ -108,14 +95,12 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: Do Stylelint
-        if: env.LAUNCH_STYLELINT == 'on'
         uses: reviewdog/action-stylelint@v1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           stylelint_input: "./**/*.scss"
       - name: Displayed Stylelint Failure on Checks
-        if: env.LAUNCH_STYLELINT == 'on'
         run: yarn stylelint
 
   typecheckApps:
@@ -136,7 +121,6 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       # Currently, tsc && reviewdog is will not display properly in conversation review.
       - name: Do Type Check
-        if: env.LAUNCH_TYPECHECK == 'on'
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -168,7 +152,6 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       # Currently, tsc && reviewdog is will not display properly in conversation review.
       - name: Do Type Check
-        if: env.LAUNCH_TYPECHECK == 'on'
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -200,8 +183,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: Install Global Gulp For Client.
-        if: env.LAUNCH_BUILD == 'on'
         run: yarn workspace client add global gulp-cli
       - name: Do Build Test
-        if: env.LAUNCH_BUILD == 'on'
         run: yarn build
