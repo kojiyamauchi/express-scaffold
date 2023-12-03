@@ -1,5 +1,6 @@
 {
   "watch": ["./resource/", "../delivery/"],
+  "delay": 2500,
   "ext": "ts,js,json,css,ejs,html,webp,svg,png,jpg,jpeg,gif",
   "exec": "NODE_ENV=development ts-node --files resource/serve.ts"
 }
