@@ -1,6 +1,6 @@
 name: CI Local Test
 
-on:
+on: workflow_call
 
 env:
   NODE_VERSION: 18.*
