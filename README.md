@@ -5,6 +5,14 @@ Express Scaffold.
 
 ## 🧎‍♂️ Usage.
 
+- Express Server.
+  - `https://localhost:3000`
+- MySQL Database Server.
+  - `https://localhost:3306`
+- Browser Sync Port.
+  - `https://localhost:8000`
+- Browser Sync UI Port.
+  - `http://localhost:9999`
 - Setup.
   - Local HTTPS.
     - `make ssl`
