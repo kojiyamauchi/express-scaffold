@@ -1,5 +1,6 @@
 name: CI Local Test
 
+# Disabled on GitHub Actions.
 on: workflow_call
 
 env:
@@ -169,8 +170,7 @@ jobs:
 
   build:
     name: Build Test
-    needs:
-      - setup
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
