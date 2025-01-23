@@ -7,7 +7,7 @@
 
 export default class Module {
   // Types.
-  private readonly letter: string
+  private readonly letter: number
 
   public constructor(arg: string) {
     // Add Constructor.
