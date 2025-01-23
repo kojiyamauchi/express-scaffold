@@ -27,5 +27,5 @@ mysql:
 
 .PHONY: act
 act:
-	act -j ${JOB} -W .github/workflows/ci-local-test.yml -P ubuntu-latest=node:18
+	act -j ${JOB} -W .github/workflows/ci-local-test.yml -P ubuntu-latest=node:22
 

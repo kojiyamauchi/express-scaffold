@@ -4,7 +4,7 @@ name: CI Local Test
 on: workflow_call
 
 env:
-  NODE_VERSION: 18.*
+  NODE_VERSION: 22.*
 
 jobs:
   setup:
