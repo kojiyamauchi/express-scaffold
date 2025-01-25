@@ -7,6 +7,11 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "packageManager": "yarn@4.6.0",
+  "engines": {
+    "npm": "use yarn instead.",
+    "yarn": "4.6.0"
+  },
   "dependencies": {
     "core-js": "3.33.0",
     "global": "^4.4.0",
@@ -104,7 +109,7 @@
     "build": "gulp onBuild",
     "clean": "gulp onClean",
     "lint": "eslint 'resource/**/*.{ts,js}' --max-warnings 0",
-    "lint:fix": "eslint --fix 'resource/**/*.{ts,js}'",
+    "lint-fix": "eslint --fix 'resource/**/*.{ts,js}'",
     "stylelint": "stylelint 'resource/**/*.scss'",
     "jest": "jest --passWithNoTests"
   }

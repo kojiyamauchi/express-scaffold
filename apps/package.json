@@ -6,6 +6,11 @@
   "repository": "git@github.com:kojiyamauchi/express-scaffold.git",
   "license": "MIT",
   "private": true,
+  "packageManager": "yarn@4.6.0",
+  "engines": {
+    "npm": "use yarn instead.",
+    "yarn": "4.6.0"
+  },
   "dependencies": {
     "express": "^4.18.2"
   },
@@ -55,15 +60,15 @@
     "wait-on": "^7.0.1"
   },
   "scripts": {
-    "setup:browser": "wait-on https://localhost:3000 && browser-sync start --config bs-config.js",
-    "setup:nodemon": "nodemon",
-    "dev": "run-p setup:*",
+    "dev:browser": "wait-on https://localhost:3000 && browser-sync start --config bs-config.js",
+    "dev:nodemon": "nodemon",
+    "dev": "run-p \"dev:*\"",
     "build": "tsc --project tsconfig.build.json && cp -r resource/views build",
     "serve": "NODE_ENV=production node build/serve.js",
     "serve:local": "run-p setup:browser serve",
-    "clean": "rimraf build/*",
+    "clean": "rimraf build && mkdir build && touch build/.gitkeep",
     "jest": "jest --passWithNoTests",
     "lint": "eslint 'resource/**/*.{ts,js}' --max-warnings 0",
-    "lint:fix": "eslint --fix 'resource/**/*.{ts,js}'"
+    "lint-fix": "eslint --fix 'resource/**/*.{ts,js}'"
   }
 }
