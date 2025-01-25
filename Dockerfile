@@ -1,4 +1,4 @@
-FROM node:18.18.1-alpine3.18
+FROM node:22.13.1-alpine3.21
 WORKDIR /application
 
 COPY ./package.json ./
@@ -23,7 +23,9 @@ RUN apk --update add --no-cache pkgconfig \
     gifsicle \
     gcompat \
     zlib-dev
+RUN corepack enable
+RUN yarn set version 4.6.0
 RUN yarn workspace client add global gulp-cli \
-    && yarn --ignore-optional
+    && yarn
 EXPOSE 3000 8000 9999
 CMD ["yarn", "dev"]

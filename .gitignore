@@ -15,5 +15,12 @@ apps/server.csr
 */_.eslintrc.yml
 mysql/*
 !mysql/.gitkeep
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 .env
 
