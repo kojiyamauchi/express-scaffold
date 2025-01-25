@@ -23,7 +23,8 @@ RUN apk --update add --no-cache pkgconfig \
     gifsicle \
     gcompat \
     zlib-dev
+RUN corepack enable
 RUN yarn workspace client add global gulp-cli \
-    && yarn --ignore-optional
+    && yarn
 EXPOSE 3000 8000 9999
 CMD ["yarn", "dev"]
