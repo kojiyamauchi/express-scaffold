@@ -5,6 +5,7 @@ words:
   - cachebuster
   - callout
   - corejs
+  - corepack
   - cssmin
   - ecmas
   - esbenp
@@ -58,9 +59,9 @@ ignorePaths:
   - yarn.lock
   - tsconfig.tsbuildinfo
   - cspell.yml
-  - ./**/*/Makefile
-  - ./**/*/Dockerfile
-  - ./**/*/docker-compose.yml
-  - ./**/*/.dockerignore
+  - Makefile
+  - Dockerfile
+  - compose.yml
+  - .dockerignore
   - ./mysql/**
-  - ./**/*/my.cnf
+  - my.cnf
