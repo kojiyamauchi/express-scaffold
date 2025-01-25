@@ -5,6 +5,7 @@ on: workflow_call
 
 env:
   NODE_VERSION: 22.*
+  YARN_VERSION: 4.6.0
 
 jobs:
   setup:
@@ -28,7 +29,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Install Dependencies
         run: yarn
 
@@ -46,7 +47,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -78,7 +79,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -107,7 +108,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -136,7 +137,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -171,7 +172,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -206,7 +207,7 @@ jobs:
       - name: Set Yarn Version
         run: |
           corepack enable
-          yarn set version 4.6.0
+          yarn set version ${{ env.YARN_VERSION }}
       - name: Restore Modules
         uses: actions/cache@v3
         with:
