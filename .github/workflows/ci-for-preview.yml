@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
           restore-keys: |
             ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-
-      - name: Install Yarn
+      - name: Set Yarn Version
         run: |
           corepack enable
           yarn set version 4.6.0
@@ -49,6 +49,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -79,6 +83,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -106,6 +114,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -133,6 +145,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -165,6 +181,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
@@ -203,6 +223,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version 4.6.0
       - name: Restore Modules
         uses: actions/cache@v3
         with:
