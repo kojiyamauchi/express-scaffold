@@ -31,6 +31,8 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
           restore-keys: |
             ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-
+      - name: Install Yarn
+        run: corepack enable
       - name: Install Dependencies
         run: yarn
 
