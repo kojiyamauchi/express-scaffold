@@ -4,7 +4,9 @@
 
 import webpack from 'webpack'
 import { merge } from 'webpack-merge'
-import webpackBase from './webpack.base.babel'
+import webpackBase from './webpack.base.mjs'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
 
 // Base Setting by webpack.gulp.base.babel.js
 export default merge(webpackBase, {
