@@ -1,5 +1,3 @@
-'use strict'
-
 // Switches Each Mode.
 const switches = {
   ecma: true,
@@ -20,8 +18,8 @@ import { src, dest, lastRun, series, parallel, watch } from 'gulp'
 // For ECMA.
 import webpack from 'webpack'
 import webpackStream from 'webpack-stream'
-import webpackDev from './webpack/webpack.dev.babel'
-import webpackPro from './webpack/webpack.pro.babel'
+import webpackDev from './webpack/webpack.dev.mjs'
+import webpackPro from './webpack/webpack.pro.mjs'
 // For Style.
 import gulpSass from 'gulp-sass'
 import dartSass from 'sass'
@@ -31,7 +29,7 @@ import postCss from 'gulp-postcss'
 import autoprefixer from 'autoprefixer'
 import fixFlexBugs from 'postcss-flexbugs-fixes'
 import cacheBustingBackgroundImage from 'postcss-cachebuster'
-import cssmin from 'gulp-cssmin'
+// import cssmin from 'gulp-cssmin'
 // For Images.
 import webp from 'gulp-webp'
 import imagemin from 'gulp-imagemin'
@@ -189,7 +187,7 @@ export const onCopy = () => {
 // Build　Manually.
 // ECMA / Style / All.
 export const onEcma = onWebpackDev
-export const onStyles = series(onSass, onCssmin)
+export const onStyles = series(onSass /*, onCssmin*/)
 export const onBuild = series(
   onClean,
   parallel(onWebpackPro, onStyles, onWebps, onMinifyImages, (doneReport) => {
@@ -202,7 +200,7 @@ export const onBuild = series(
 )
 
 // When Developing, Build Automatically.
-exports.default = parallel(() => {
+export default parallel(() => {
   switches.ecma && watch([setup.ecmas.in, setup.ecmas.inTypes], onEcma)
   switches.json && watch(setup.ecmas.inJson, onJson)
   switches.styles && watch(setup.styles.inScss, onStyles)

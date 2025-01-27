@@ -9,6 +9,9 @@ import ForkTsChecker from 'fork-ts-checker-webpack-plugin'
 import ForkTsCheckerNotifierWebpackPlugin from 'fork-ts-checker-notifier-webpack-plugin'
 import ESLintPlugin from 'eslint-webpack-plugin'
 import WebpackNotifierPlugin from 'webpack-notifier'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Setting Multiple Entry Points for Static Website.
 const baseDir = './resource/base/'
@@ -19,7 +22,7 @@ globSync('*.js', { cwd: baseDir }).forEach((info) => (entries[info.replace('.js'
 entryPointIgnore.forEach((info) => delete entries[info])
 
 // Setting Start.
-module.exports = {
+export default {
   // Instructs webpack to Target a Specific Environment, Will Still Keep IE11 Watched.
   // See -> https://webpack.js.org/configuration/target
   target: ['web', 'es5'],
