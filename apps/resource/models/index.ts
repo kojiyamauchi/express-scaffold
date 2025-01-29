@@ -18,14 +18,14 @@ const con = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_ROOT_PASS,
   database: process.env.DB_NAME,
-  dateStrings: true
+  dateStrings: true,
 })
 
 con.connect(function (err) {
   if (err) {
     throw `Database Un Connected Error Below \n${err}`
   }
-  console.log('Database Connected')
+  console.info('Database Connected')
 })
 
 export const models = {
@@ -47,7 +47,7 @@ export const models = {
           reject(error)
           return
         }
-        console.log('userList', results)
+        console.info('userList', results)
         resolve(results)
       })
     })
@@ -61,7 +61,7 @@ export const models = {
           reject(error)
           return
         }
-        console.log('User', result)
+        console.info('User', result)
         resolve(result)
       })
     })
@@ -76,7 +76,7 @@ export const models = {
           return
         }
         // Output Result Set Header.
-        console.log(result)
+        console.info(result)
         resolve(result)
       })
     })
@@ -91,7 +91,7 @@ export const models = {
           return
         }
         // Output Result Set Header.
-        console.log(result)
+        console.info(result)
         resolve(result)
       })
     })
@@ -106,9 +106,9 @@ export const models = {
           return
         }
         // Output Result Set Header.
-        console.log(result)
+        console.info(result)
         resolve(result)
       })
     })
-  }
+  },
 }

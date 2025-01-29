@@ -81,7 +81,6 @@ app.use('/api/user/:id', [routes.update, routes.delete])
 app.use((_req, _res, next) => next(createError(404)))
 
 // Error Handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: ErrorType, req: Request, res: Response, _next: NextFunction) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
