@@ -2,16 +2,13 @@
    Setting webpack for gulp.
 */
 
-import webpack from 'webpack'
-import path from 'path'
-import { globSync } from 'glob'
-import ForkTsChecker from 'fork-ts-checker-webpack-plugin'
-import ForkTsCheckerNotifierWebpackPlugin from 'fork-ts-checker-notifier-webpack-plugin'
 import ESLintPlugin from 'eslint-webpack-plugin'
+import ForkTsCheckerNotifierWebpackPlugin from 'fork-ts-checker-notifier-webpack-plugin'
+import ForkTsChecker from 'fork-ts-checker-webpack-plugin'
+import { globSync } from 'glob'
+import path from 'path'
 import WebpackNotifierPlugin from 'webpack-notifier'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = import.meta.dirname
 
 // Setting Multiple Entry Points for Static Website.
 const baseDir = './resource/base/'
@@ -32,7 +29,7 @@ export default {
   // JS Core File Output Point.
   output: {
     // 'path' Key is Not Used. ( Setting of Output Dir is Managed by gulp.babel.js )
-    filename: '[name].min.js'
+    filename: '[name].min.js',
   },
 
   // Bundle for Polyfill & Common Import Modules.
@@ -45,7 +42,7 @@ export default {
           enforce: true,
           chunks(chunk) {
             return !splitChunksIgnore.includes(chunk.name)
-          }
+          },
         },
         modules: {
           test: /node_modules\/(?!(core-js)\/).*/,
@@ -53,10 +50,10 @@ export default {
           enforce: true,
           chunks(chunk) {
             return !splitChunksIgnore.includes(chunk.name)
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
 
   // Core Setting.
@@ -66,28 +63,28 @@ export default {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['cache-loader', 'thread-loader', 'babel-loader?cacheDirectory']
+        use: ['cache-loader', 'thread-loader', 'babel-loader?cacheDirectory'],
       },
       // TypeScript.
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: ['cache-loader', 'thread-loader', 'babel-loader?cacheDirectory', { loader: 'ts-loader', options: { happyPackMode: true } }]
+        use: ['cache-loader', 'thread-loader', 'babel-loader?cacheDirectory', { loader: 'ts-loader', options: { happyPackMode: true } }],
       },
       // Import Json File.
       {
         type: 'javascript/auto',
         test: /\.json$/,
         exclude: /node_modules/,
-        use: 'json-loader'
+        use: 'json-loader',
       },
       // JS Source Map.
       {
         test: /\.js$/,
         enforce: 'pre',
-        use: 'source-map-loader'
-      }
-    ]
+        use: 'source-map-loader',
+      },
+    ],
   },
 
   // Setting for Extensions & Path Resolve.
@@ -97,8 +94,8 @@ export default {
 
     // Setting for Project Root Dir, When Import JS Modules.
     alias: {
-      '@': path.resolve(__dirname, '../resource/base/')
-    }
+      '@': path.resolve(__dirname, '../resource/base/'),
+    },
   },
 
   // Setting for Plugins.
@@ -109,16 +106,21 @@ export default {
       typescript: {
         diagnosticOptions: {
           semantic: true,
-          syntactic: true
-        }
-      }
+          syntactic: true,
+        },
+      },
     }),
     // Notify Desktop When a TypeScript Error.
     new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript | Client' }),
     // ESLint on webpack.
-    new ESLintPlugin({ files: [path.resolve(__dirname, '../resource/**/*.{ts,tsx,js,jsx}')], failOnWarning: true }),
+    new ESLintPlugin({
+      overrideConfigFile: path.resolve(__dirname, '../eslint.config.mjs'),
+      configType: 'flat',
+      files: [path.resolve(__dirname, '../resource/**/*.{ts,tsx,js,jsx}')],
+      failOnWarning: true,
+    }),
     // Notify Desktop When a ESLint or Webpack Build Error.
-    new WebpackNotifierPlugin({ title: 'ESLint or Webpack Build | Client' })
+    new WebpackNotifierPlugin({ title: 'ESLint or Webpack Build | Client' }),
   ],
 
   // Setting for Warning on Terminal.
@@ -131,6 +133,6 @@ export default {
     /* An asset is any emitted file from webpack.
     This option controls when webpack emits a performance hint based on individual asset size.
     The default value is 250000 (bytes). */
-    maxAssetSize: 400000
-  }
+    maxAssetSize: 400000,
+  },
 }
