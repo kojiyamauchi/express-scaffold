@@ -65,8 +65,8 @@ jobs:
       - name: Displayed CSpell Failure on Checks
         run: yarn cspell --dot --no-must-find-files "**/*"
 
-  eslint:
-    name: ESlint
+  eslintApps:
+    name: ESlint Apps
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -85,14 +85,43 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-      - name: Do ESLint
+      - name: Do ESLint Apps
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
-          eslint_flags: "./**/*.{ts,js}"
+          eslint_flags: "./apps/**/*.{ts,mjs,js}"
       - name: Displayed ESLINT Failure on Checks
-        run: yarn lint
+        run: yarn lint:apps
+
+  eslintClient:
+    name: ESlint Client
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Execution Environment for Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version ${{ env.YARN_VERSION }}
+      - name: Restore Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Do ESLint Client
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: "./client/**/*.{ts,mjs,js}"
+      - name: Displayed ESLINT Failure on Checks
+        run: yarn lint:client
 
   stylelint:
     name: Stylelint
@@ -144,7 +173,7 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       # Currently, tsc && reviewdog is will not display properly in conversation review.
-      - name: Do Type Check
+      - name: Do Type Check Apps
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -155,8 +184,7 @@ jobs:
           filter_mode: nofilter
       # - name: Displayed Tsc Failure on Checks
       #   if: env.LAUNCH_TYPECHECK == 'on'
-      #   run: |
-      #     yarn tsc --noEmit
+      #   run: yarn typecheck:apps
 
   typecheckClient:
     name: Type Check Client
@@ -179,7 +207,7 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       # Currently, tsc && reviewdog is will not display properly in conversation review.
-      - name: Do Type Check
+      - name: Do Type Check Client
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -190,8 +218,7 @@ jobs:
           filter_mode: nofilter
       # - name: Displayed Tsc Failure on Checks
       #   if: env.LAUNCH_TYPECHECK == 'on'
-      #   run: |
-      #     yarn tsc --noEmit
+      #   run: yarn typecheck:client
 
   build:
     name: Build Test
