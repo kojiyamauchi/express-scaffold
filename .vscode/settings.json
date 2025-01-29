@@ -15,5 +15,6 @@
     "editor.formatOnSave": false
   },
   "stylelint.validate": ["css", "scss"],
-  "cSpell.enabled": true
+  "cSpell.enabled": true,
+  "makefile.configureOnOpen": false
 }

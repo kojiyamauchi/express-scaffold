@@ -9,42 +9,33 @@ const switches = {
   siteMap: false,
   htaccess: false,
   copy: false,
-  rename: false
+  rename: false,
 }
 
-// Import Gulp API.
-import { src, dest, lastRun, series, parallel, watch } from 'gulp'
-
-// For ECMA.
-import webpack from 'webpack'
-import webpackStream from 'webpack-stream'
-import webpackDev from './webpack/webpack.dev.mjs'
-import webpackPro from './webpack/webpack.pro.mjs'
-// For Style.
-import gulpSass from 'gulp-sass'
-import dartSass from 'sass'
-import stylelint from 'gulp-stylelint'
-import sassGlob from 'gulp-sass-glob'
-import postCss from 'gulp-postcss'
 import autoprefixer from 'autoprefixer'
-import fixFlexBugs from 'postcss-flexbugs-fixes'
-import cacheBustingBackgroundImage from 'postcss-cachebuster'
-// import cssmin from 'gulp-cssmin'
-// For Images.
-import webp from 'gulp-webp'
+import { exec } from 'child_process'
+import del from 'del'
+import { dest, parallel, series, src, watch } from 'gulp'
 import imagemin from 'gulp-imagemin'
+import notify from 'gulp-notify'
+import plumber from 'gulp-plumber'
+import postCss from 'gulp-postcss'
+import rename from 'gulp-rename'
+import gulpSass from 'gulp-sass'
+import sassGlob from 'gulp-sass-glob'
+import stylelint from 'gulp-stylelint'
+// import cssmin from 'gulp-cssmin'
+import webp from 'gulp-webp'
 import mozjpeg from 'imagemin-mozjpeg'
 import pngquant from 'imagemin-pngquant'
-// Utilities.
-import utility from 'gulp-util'
-import plumber from 'gulp-plumber'
-import notify from 'gulp-notify'
-import rename from 'gulp-rename'
-import del from 'del'
-import replace from 'gulp-replace'
-import crypto from 'crypto'
-import gulpIf from 'gulp-if'
-import { exec } from 'child_process'
+import cacheBustingBackgroundImage from 'postcss-cachebuster'
+import fixFlexBugs from 'postcss-flexbugs-fixes'
+import dartSass from 'sass'
+import webpack from 'webpack'
+import webpackStream from 'webpack-stream'
+
+import webpackDev from './webpack/webpack.dev.mjs'
+import webpackPro from './webpack/webpack.pro.mjs'
 
 // Setup.
 const sass = gulpSass(dartSass)
@@ -54,7 +45,7 @@ const setup = {
     out: '../delivery/assets/js/',
     inTypes: './resource/types/**/*',
     inJson: './resource/materials/json/*',
-    outJson: '../delivery/assets/json/'
+    outJson: '../delivery/assets/json/',
   },
   styles: {
     inScss: './resource/styles/**/*.scss',
@@ -64,18 +55,18 @@ const setup = {
     entryPointIgnore: [],
     globIgnore: [],
     postCssLayoutFix: [autoprefixer({ grid: true }), fixFlexBugs],
-    postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })]
+    postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
   },
   images: {
     in: './resource/materials/images/*.{svg,png,jpg,jpeg,gif}',
     out: '../delivery/assets/images/',
     inWebps: './resource/materials/toWebps/*.{svg,png,jpg,jpeg,gif}',
-    outWebps: './resource/materials/images/'
+    outWebps: './resource/materials/images/',
   },
   favicons: {
     in: './resource/materials/favicons/*',
-    out: '../delivery/assets/favicons/'
-  }
+    out: '../delivery/assets/favicons/',
+  },
 }
 
 // Development Mode of ECMA by Webpack.
@@ -113,13 +104,13 @@ export const onSass = () => {
 }
 
 // Minify CSS.
-export const onCssmin = () => {
+/* export const onCssmin = () => {
   return src(setup.styles.inCss)
     .pipe(postCss(setup.styles.postCssCacheBusting))
     .pipe(cssmin())
     .pipe(rename({ suffix: '.min' }))
     .pipe(dest(setup.styles.outCss))
-}
+}*/
 
 // Convert to Webp.
 export const onWebps = () => {
@@ -135,8 +126,8 @@ export const onMinifyImages = () => {
         pngquant({ quality: [0.65, 0.8], speed: 1 }),
         mozjpeg({ quality: 80 }),
         imagemin.gifsicle({ interlaced: false }),
-        imagemin.svgo({ plugins: [{ removeViewBox: true }, { cleanupIDs: false }] })
-      ])
+        imagemin.svgo({ plugins: [{ removeViewBox: true }, { cleanupIDs: false }] }),
+      ]),
     )
     .pipe(dest(setup.images.out))
 }
@@ -150,7 +141,7 @@ export const onManifest = () => {
 // When Add Favicon.
 export const onFavicon = () => {
   return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml']).pipe(
-    dest(setup.favicons.out)
+    dest(setup.favicons.out),
   )
 }
 
@@ -184,10 +175,10 @@ export const onCopy = () => {
   return src('Add Source Dir/').pipe('Add Destination Dir/')
 }
 
-// Build　Manually.
+// Build Manually.
 // ECMA / Style / All.
 export const onEcma = onWebpackDev
-export const onStyles = series(onSass /*, onCssmin*/)
+export const onStyles = series(onSass /* , onCssmin*/)
 export const onBuild = series(
   onClean,
   parallel(onWebpackPro, onStyles, onWebps, onMinifyImages, (doneReport) => {
@@ -196,7 +187,7 @@ export const onBuild = series(
     switches.favicon && onFavicon()
     switches.htaccess && onHtaccess()
     doneReport()
-  })
+  }),
 )
 
 // When Developing, Build Automatically.

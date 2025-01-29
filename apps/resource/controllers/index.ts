@@ -19,7 +19,7 @@ export const controllers = {
       if (Array.isArray(userList)) {
         res.render('./user-list/index.ejs', { heading: 'User List.', userList: userList })
       }
-    } catch (error) {
+    } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
@@ -32,7 +32,7 @@ export const controllers = {
         const [user] = results
         const formatTimestamp = {
           createAt: user.create_at,
-          updateAt: user.update_at
+          updateAt: user.update_at,
         }
         const [phone1, phone2, phone3] = user.phone.split('-')
         const formatUser = {
@@ -42,11 +42,11 @@ export const controllers = {
           phone1: phone1,
           phone2: phone2,
           phone3: phone3,
-          email: user.email
+          email: user.email,
         }
         res.render('./user/index.ejs', { heading: `User #${user.id}.`, timestamp: formatTimestamp, user: formatUser })
       }
-    } catch (error) {
+    } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
@@ -59,14 +59,14 @@ export const controllers = {
       name: req.body.name,
       url: req.body.url,
       phone: `${req.body.phone1}-${req.body.phone2}-${req.body.phone3}`,
-      email: req.body.email
+      email: req.body.email,
     }
     try {
       const result = await models.insert([formatInsert.name, formatInsert.url, formatInsert.phone, formatInsert.email])
       if ('insertId' in result) {
         res.redirect(`/user/${result.insertId}`)
       }
-    } catch (error) {
+    } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
@@ -77,12 +77,12 @@ export const controllers = {
       name: req.body.name,
       url: req.body.url,
       phone: `${req.body.phone1}-${req.body.phone2}-${req.body.phone3}`,
-      email: req.body.email
+      email: req.body.email,
     }
     try {
       await models.update([formatUpdate.name, formatUpdate.url, formatUpdate.phone, formatUpdate.email, formatUpdate.id])
       res.redirect(`/user/${formatUpdate.id}`)
-    } catch (error) {
+    } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
@@ -92,9 +92,9 @@ export const controllers = {
     try {
       await models.delete(userId)
       res.redirect('/user-list')
-    } catch (error) {
+    } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
-  }
+  },
 }

@@ -2,11 +2,10 @@
    Setting webpack for Development.
 */
 
-import webpack from 'webpack'
 import { merge } from 'webpack-merge'
+
 import webpackBase from './webpack.base.mjs'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
+const __filename = import.meta.filename
 
 // Base Setting by webpack.gulp.base.babel.js
 export default merge(webpackBase, {
@@ -20,9 +19,9 @@ export default merge(webpackBase, {
   cache: {
     type: 'filesystem',
     buildDependencies: {
-      config: [__filename]
-    }
+      config: [__filename],
+    },
   },
   plugins: [],
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
 })
