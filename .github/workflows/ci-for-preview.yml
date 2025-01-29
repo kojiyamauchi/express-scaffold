@@ -99,7 +99,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
-          eslint_flags: "./apps/**/*.{ts,mjs,js}"
+          workdir: "apps"
+          eslint_flags: "./**/*.{ts,mjs,js}"
       - name: Displayed ESLINT Failure on Checks
         if: env.LAUNCH_ESLINT == 'on'
         run: yarn lint:apps
@@ -130,7 +131,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
-          eslint_flags: "./client/**/*.{ts,mjs,js}"
+          workdir: "client"
+          eslint_flags: "./**/*.{ts,mjs,js}"
       - name: Displayed ESLINT Failure on Checks
         if: env.LAUNCH_ESLINT == 'on'
         run: yarn lint:client
