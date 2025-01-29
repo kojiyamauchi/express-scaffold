@@ -1,8 +1,8 @@
-apps/**/*.ts:
+apps/**/*.{ts,mjs}:
   - yarn workspace apps prettier --write
   - yarn workspace apps eslint --fix --max-warnings 0
 apps/**/*.js: yarn workspace apps prettier --write
-client/**/*.ts:
+client/**/*.{ts,mjs}:
   - yarn workspace client prettier --write
   - yarn workspace client eslint --fix --max-warnings 0
 client/**/*.js: yarn workspace client prettier --write
