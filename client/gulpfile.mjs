@@ -14,7 +14,7 @@ const switches = {
 
 import autoprefixer from 'autoprefixer'
 import { exec } from 'child_process'
-import del from 'del'
+import { deleteAsync } from 'del'
 import { dest, parallel, series, src, watch } from 'gulp'
 import cssmin from 'gulp-clean-css'
 import sass from 'gulp-dart-sass'
@@ -157,8 +157,8 @@ export const onHtaccess = () => {
 }
 
 // Delete Unnecessary Files.
-export const onDelete = (cb) => {
-  return del(['**/.DS_Store', '!node_modules/**/*'], cb)
+export const onDelete = async (cb) => {
+  return await deleteAsync(['**/.DS_Store', '!node_modules/**/*'], cb)
 }
 
 // For When Building Manually, Delete Compiled Files Before Building. ( When Switching Working Branches. )
