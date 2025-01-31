@@ -1,15 +1,7 @@
 @charset "UTF-8";
-/*==============================================================================
-
- 500 Internal Server Error Page SCSS.
-
- Currently, '@use' Doesn't Seem to Be Able to Use 'glob',
- Use '@import' in Some Cases on Entrypoint.
-
-==============================================================================*/
 @use "default";
 @use "utilities";
 @use "plugins/some-plugin";
 @use "components/pages/common/some-commons";
-@import "components/common/*";
-@import "components/pages/server-error/*";
+@use "components/common/*";
+@use "components/pages/server-error/*";
