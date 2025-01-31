@@ -18,14 +18,11 @@ import del from 'del'
 import { dest, parallel, series, src, watch } from 'gulp'
 import cssmin from 'gulp-clean-css'
 import sass from 'gulp-dart-sass'
-import imagemin from 'gulp-imagemin'
 import plumber from 'gulp-plumber'
 import postCss from 'gulp-postcss'
 import rename from 'gulp-rename'
 import sassGlob from 'gulp-sass-glob-use-forward'
 import webp from 'gulp-webp'
-import mozjpeg from 'imagemin-mozjpeg'
-import pngquant from 'imagemin-pngquant'
 import cacheBustingBackgroundImage from 'postcss-cachebuster'
 import fixFlexBugs from 'postcss-flexbugs-fixes'
 import stylelint from 'stylelint'
@@ -92,6 +89,7 @@ export const onJson = () => {
 // Compile Sass.
 export const onSass = () => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
+    .pipe(plumber())
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
     .pipe(sass.sync({ silenceDeprecations: ['legacy-js-api'], outputStyle: 'expanded' }).on('error', sass.logError))
     .pipe(postCss(setup.styles.postCssSassOptions))
@@ -113,15 +111,27 @@ export const onWebps = () => {
 }
 
 // Minify Images.
-export const onMinifyImages = () => {
+export const onMinifyImages = async () => {
+  const imagemin = await import('gulp-imagemin')
   return src(setup.images.in)
     .pipe(plumber())
     .pipe(
-      imagemin([
-        pngquant({ quality: [0.65, 0.8], speed: 1 }),
-        mozjpeg({ quality: 80 }),
-        imagemin.gifsicle({ interlaced: false }),
-        imagemin.svgo({ plugins: [{ removeViewBox: true }, { cleanupIDs: false }] }),
+      imagemin.default([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 80, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [
+            {
+              name: 'removeViewBox',
+              active: true,
+            },
+            {
+              name: 'cleanupIDs',
+              active: false,
+            },
+          ],
+        }),
       ]),
     )
     .pipe(dest(setup.images.out))
