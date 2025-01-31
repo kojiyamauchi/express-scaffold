@@ -16,13 +16,13 @@ import autoprefixer from 'autoprefixer'
 import { exec } from 'child_process'
 import del from 'del'
 import { dest, parallel, series, src, watch } from 'gulp'
+import cssmin from 'gulp-clean-css'
 import sass from 'gulp-dart-sass'
 import imagemin from 'gulp-imagemin'
 import plumber from 'gulp-plumber'
 import postCss from 'gulp-postcss'
 import rename from 'gulp-rename'
 import sassGlob from 'gulp-sass-glob-use-forward'
-// import cssmin from 'gulp-cssmin'
 import webp from 'gulp-webp'
 import mozjpeg from 'imagemin-mozjpeg'
 import pngquant from 'imagemin-pngquant'
@@ -52,7 +52,7 @@ const setup = {
     entryPointIgnore: [],
     globIgnore: [],
     postCssSassOptions: [autoprefixer({ grid: true }), fixFlexBugs, stylelint()],
-    postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
+    postCssCssOptions: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
   },
   images: {
     in: './resource/materials/images/*.{svg,png,jpg,jpeg,gif}',
@@ -93,19 +93,19 @@ export const onJson = () => {
 export const onSass = () => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
-    .pipe(sass.sync({ outputStyle: 'expanded' }).on('error', sass.logError))
+    .pipe(sass.sync({ silenceDeprecations: ['legacy-js-api'], outputStyle: 'expanded' }).on('error', sass.logError))
     .pipe(postCss(setup.styles.postCssSassOptions))
     .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
 
 // Minify CSS.
-/* export const onCssmin = () => {
+export const onCssmin = () => {
   return src(setup.styles.inCss)
-    .pipe(postCss(setup.styles.postCssCacheBusting))
+    .pipe(postCss(setup.styles.postCssCssOptions))
     .pipe(cssmin())
     .pipe(rename({ suffix: '.min' }))
     .pipe(dest(setup.styles.outCss))
-}*/
+}
 
 // Convert to Webp.
 export const onWebps = () => {
