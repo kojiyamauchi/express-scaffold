@@ -14,7 +14,7 @@
     // Don't use prettier for EJS.
     "editor.formatOnSave": false
   },
-  "stylelint.validate": ["css", "scss"],
+  "stylelint.validate": ["scss"],
   "cSpell.enabled": true,
   "makefile.configureOnOpen": false
 }
