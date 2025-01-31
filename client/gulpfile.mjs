@@ -16,21 +16,19 @@ import autoprefixer from 'autoprefixer'
 import { exec } from 'child_process'
 import del from 'del'
 import { dest, parallel, series, src, watch } from 'gulp'
+import sass from 'gulp-dart-sass'
 import imagemin from 'gulp-imagemin'
-import notify from 'gulp-notify'
 import plumber from 'gulp-plumber'
 import postCss from 'gulp-postcss'
 import rename from 'gulp-rename'
-import gulpSass from 'gulp-sass'
-import sassGlob from 'gulp-sass-glob'
-import stylelint from 'gulp-stylelint'
+import sassGlob from 'gulp-sass-glob-use-forward'
 // import cssmin from 'gulp-cssmin'
 import webp from 'gulp-webp'
 import mozjpeg from 'imagemin-mozjpeg'
 import pngquant from 'imagemin-pngquant'
 import cacheBustingBackgroundImage from 'postcss-cachebuster'
 import fixFlexBugs from 'postcss-flexbugs-fixes'
-import dartSass from 'sass'
+import stylelint from 'stylelint'
 import webpack from 'webpack'
 import webpackStream from 'webpack-stream'
 
@@ -38,7 +36,6 @@ import webpackDev from './webpack/webpack.dev.mjs'
 import webpackPro from './webpack/webpack.pro.mjs'
 
 // Setup.
-const sass = gulpSass(dartSass)
 const setup = {
   ecmas: {
     in: './resource/base/**/*',
@@ -54,7 +51,7 @@ const setup = {
     outCss: '../delivery/assets/css/',
     entryPointIgnore: [],
     globIgnore: [],
-    postCssLayoutFix: [autoprefixer({ grid: true }), fixFlexBugs],
+    postCssSassOptions: [autoprefixer({ grid: true }), fixFlexBugs, stylelint()],
     postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
   },
   images: {
@@ -95,11 +92,9 @@ export const onJson = () => {
 // Compile Sass.
 export const onSass = () => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
-    .pipe(plumber({ errorHandler: notify.onError({ message: 'SCSS Compile Error: <%= error.message %>', onLast: true }) }))
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
-    .pipe(sass.sync({ outputStyle: 'expanded' }))
-    .pipe(postCss(setup.styles.postCssLayoutFix))
-    .pipe(stylelint({ reporters: [{ formatter: 'string', console: true }], fix: true }))
+    .pipe(sass.sync({ outputStyle: 'expanded' }).on('error', sass.logError))
+    .pipe(postCss(setup.styles.postCssSassOptions))
     .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
 
