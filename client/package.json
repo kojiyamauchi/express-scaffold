@@ -45,6 +45,7 @@
     "cache-loader": "^4.1.0",
     "chokidar": "^4.0.3",
     "chokidar-cli": "^3.0.0",
+    "dayjs": "1.11.13",
     "del": "8.0.0",
     "dotenv": "^16.4.7",
     "es6-promise": "^4.2.8",
