@@ -1,3 +1,25 @@
+import autoprefixer from 'autoprefixer'
+import { exec } from 'child_process'
+import dayjs from 'dayjs'
+import { deleteAsync } from 'del'
+import { dest, parallel, series, src, watch } from 'gulp'
+import cssmin from 'gulp-clean-css'
+import sass from 'gulp-dart-sass'
+import plumber from 'gulp-plumber'
+import postCss from 'gulp-postcss'
+import rename from 'gulp-rename'
+import sassGlob from 'gulp-sass-glob-use-forward'
+import webp from 'gulp-webp'
+import cacheBustingBackgroundImage from 'postcss-cachebuster'
+import fixFlexBugs from 'postcss-flexbugs-fixes'
+import webpack from 'webpack'
+import webpackStream from 'webpack-stream'
+
+import webpackDev from './webpack/webpack.dev.mjs'
+import webpackPro from './webpack/webpack.pro.mjs'
+
+const date = dayjs()
+
 // Switches Each Mode.
 const switches = {
   ecma: true,
@@ -12,25 +34,16 @@ const switches = {
   rename: false,
 }
 
-import autoprefixer from 'autoprefixer'
-import { exec } from 'child_process'
-import { deleteAsync } from 'del'
-import { dest, parallel, series, src, watch } from 'gulp'
-import cssmin from 'gulp-clean-css'
-import sass from 'gulp-dart-sass'
-import plumber from 'gulp-plumber'
-import postCss from 'gulp-postcss'
-import rename from 'gulp-rename'
-import sassGlob from 'gulp-sass-glob-use-forward'
-import webp from 'gulp-webp'
-import cacheBustingBackgroundImage from 'postcss-cachebuster'
-import fixFlexBugs from 'postcss-flexbugs-fixes'
-import stylelint from 'stylelint'
-import webpack from 'webpack'
-import webpackStream from 'webpack-stream'
-
-import webpackDev from './webpack/webpack.dev.mjs'
-import webpackPro from './webpack/webpack.pro.mjs'
+const logFonts = {
+  bold: '\x1b[1m',
+  bright: '\x1b[1m',
+  colorGreen: '\x1b[32m',
+  colorCyan: '\u001b[36m',
+  colorYellow: '\x1b[33m',
+  colorRed: '\x1b[31m',
+  colorMagenta: '\u001b[35m',
+  reset: '\x1b[0m',
+}
 
 // Setup.
 const setup = {
@@ -48,7 +61,7 @@ const setup = {
     outCss: '../delivery/assets/css/',
     entryPointIgnore: [],
     globIgnore: [],
-    postCssSassOptions: [autoprefixer({ grid: true }), fixFlexBugs, stylelint()],
+    postCssSassOptions: [autoprefixer({ grid: true }), fixFlexBugs],
     postCssCssOptions: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
   },
   images: {
@@ -86,15 +99,33 @@ export const onJson = () => {
   return src(setup.ecmas.inJson).pipe(dest(setup.ecmas.outJson))
 }
 
+export const onStylelint = (done) => {
+  exec("yarn stylelint './resource/styles/**/*.scss'", (err, _stdout, stderr) => {
+    if (err) {
+      console.error(`${logFonts.bold}${logFonts.colorYellow}${stderr}${logFonts.reset}`)
+      done(new Error(`${logFonts.colorRed}Stylelint Failed.${logFonts.reset}`))
+    } else {
+      console.info(`[${logFonts.colorMagenta}${date.format('HH:mm:ss')}${logFonts.reset}] ${logFonts.colorCyan}Stylelint Pass.${logFonts.reset}`)
+      done()
+    }
+  })
+}
+
 // Compile Sass.
-export const onSass = () => {
+export const onSassCompile = (done) => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
-    .pipe(plumber())
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
-    .pipe(sass.sync({ silenceDeprecations: ['legacy-js-api'], outputStyle: 'expanded' }).on('error', sass.logError))
+    .pipe(
+      sass.sync({ silenceDeprecations: ['legacy-js-api'], outputStyle: 'expanded' }).on('error', () => {
+        sass.logError
+        done(new Error(`${logFonts.colorRed}Sass Compile Failed.${logFonts.reset}`))
+      }),
+    )
     .pipe(postCss(setup.styles.postCssSassOptions))
     .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
+
+export const onSass = series(onStylelint, onSassCompile)
 
 // Minify CSS.
 export const onCssmin = () => {
@@ -183,7 +214,7 @@ export const onCopy = () => {
 // Build Manually.
 // ECMA / Style / All.
 export const onEcma = onWebpackDev
-export const onStyles = series(onSass /* , onCssmin*/)
+export const onStyles = series(onSass, onCssmin)
 export const onBuild = series(
   onClean,
   parallel(onWebpackPro, onStyles, onWebps, onMinifyImages, (doneReport) => {
