@@ -138,13 +138,13 @@ export const onCssmin = () => {
 
 // Convert to Webp.
 export const onWebps = () => {
-  return src(setup.images.inWebps).pipe(webp()).pipe(dest(setup.images.outWebps)).pipe(dest(setup.images.out))
+  return src(setup.images.inWebps, { encoding: false }).pipe(webp()).pipe(dest(setup.images.outWebps)).pipe(dest(setup.images.out))
 }
 
 // Minify Images.
 export const onMinifyImages = async () => {
   const imagemin = await import('gulp-imagemin')
-  return src(setup.images.in)
+  return src(setup.images.in, { encoding: false })
     .pipe(plumber())
     .pipe(
       imagemin.default([
@@ -176,9 +176,9 @@ export const onManifest = () => {
 
 // When Add Favicon.
 export const onFavicon = () => {
-  return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml']).pipe(
-    dest(setup.favicons.out),
-  )
+  return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml'], {
+    encoding: false,
+  }).pipe(dest(setup.favicons.out))
 }
 
 // When Add Basic Auth.
