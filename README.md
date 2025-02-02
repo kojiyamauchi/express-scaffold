@@ -30,13 +30,6 @@ Express Scaffold.
 
 ## 👓 Memo.
 
-- Modules to Fix Version.
-  - `./client`
-    - `del`: `6.1.1`
-      - `7.*.*`: For ESM.
-    - `gulp-imagemin`: `7.1.0`
-      - `8.*.*`: For ESM.
-    - `imagemin-mozjpeg`: `9.0.0`
-      - `10.*.*`: For ESM.
+- None At Present.
 
 <h2 align="center">🚶‍♂️🚶‍♂️🚶‍♂️</h2>

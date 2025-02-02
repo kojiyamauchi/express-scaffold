@@ -24,9 +24,6 @@ console.info('Looking Delivery Dir From App.ts\n', deliveryDir)
 app.use(express.static(deliveryDir))
 
 // Use PUT and DELETE Method For Template Form.
-// TODO: check when updates modules.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 app.use(methodOverride('_method'))
 
 // View Engine Setup.
@@ -44,9 +41,6 @@ app.use(cookieParser())
 app.use(logger('dev'))
 app.set('trust proxy', 1)
 app.use(
-  // TODO: check when updates modules.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   session({
     secret: 'secret',
     resave: false,

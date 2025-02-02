@@ -1,8 +1,7 @@
-import path from 'path'
-const __dirname = import.meta.dirname
+const path = require('path')
 const root = path.resolve(`${__dirname}/` + '../delivery/')
 
-export default {
+module.exports = {
   files: ['./resource/**/*', `${root}/**/*`],
   https: true,
   open: false,
@@ -11,7 +10,7 @@ export default {
   },
   port: 8000,
   browser: 'google chrome canary',
-  reloadDelay: 10000, // TODO: PC買い替えて確認する
+  reloadDelay: 1000,
   ui: {
     port: 9999,
   },

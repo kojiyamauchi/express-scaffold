@@ -1,3 +1,25 @@
+import autoprefixer from 'autoprefixer'
+import { exec } from 'child_process'
+import dayjs from 'dayjs'
+import { deleteAsync } from 'del'
+import { dest, parallel, series, src, watch } from 'gulp'
+import cssmin from 'gulp-clean-css'
+import sass from 'gulp-dart-sass'
+import plumber from 'gulp-plumber'
+import postCss from 'gulp-postcss'
+import rename from 'gulp-rename'
+import sassGlob from 'gulp-sass-glob-use-forward'
+import webp from 'gulp-webp'
+import cacheBustingBackgroundImage from 'postcss-cachebuster'
+import fixFlexBugs from 'postcss-flexbugs-fixes'
+import webpack from 'webpack'
+import webpackStream from 'webpack-stream'
+
+import webpackDev from './webpack/webpack.dev.mjs'
+import webpackPro from './webpack/webpack.pro.mjs'
+
+const date = dayjs()
+
 // Switches Each Mode.
 const switches = {
   ecma: true,
@@ -12,33 +34,18 @@ const switches = {
   rename: false,
 }
 
-import autoprefixer from 'autoprefixer'
-import { exec } from 'child_process'
-import del from 'del'
-import { dest, parallel, series, src, watch } from 'gulp'
-import imagemin from 'gulp-imagemin'
-import notify from 'gulp-notify'
-import plumber from 'gulp-plumber'
-import postCss from 'gulp-postcss'
-import rename from 'gulp-rename'
-import gulpSass from 'gulp-sass'
-import sassGlob from 'gulp-sass-glob'
-import stylelint from 'gulp-stylelint'
-// import cssmin from 'gulp-cssmin'
-import webp from 'gulp-webp'
-import mozjpeg from 'imagemin-mozjpeg'
-import pngquant from 'imagemin-pngquant'
-import cacheBustingBackgroundImage from 'postcss-cachebuster'
-import fixFlexBugs from 'postcss-flexbugs-fixes'
-import dartSass from 'sass'
-import webpack from 'webpack'
-import webpackStream from 'webpack-stream'
-
-import webpackDev from './webpack/webpack.dev.mjs'
-import webpackPro from './webpack/webpack.pro.mjs'
+const logFonts = {
+  bold: '\x1b[1m',
+  bright: '\x1b[1m',
+  colorGreen: '\x1b[32m',
+  colorCyan: '\u001b[36m',
+  colorYellow: '\x1b[33m',
+  colorRed: '\x1b[31m',
+  colorMagenta: '\u001b[35m',
+  reset: '\x1b[0m',
+}
 
 // Setup.
-const sass = gulpSass(dartSass)
 const setup = {
   ecmas: {
     in: './resource/base/**/*',
@@ -54,8 +61,8 @@ const setup = {
     outCss: '../delivery/assets/css/',
     entryPointIgnore: [],
     globIgnore: [],
-    postCssLayoutFix: [autoprefixer({ grid: true }), fixFlexBugs],
-    postCssCacheBusting: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
+    postCssSassOptions: [autoprefixer({ grid: true }), fixFlexBugs],
+    postCssCssOptions: [cacheBustingBackgroundImage({ imagesPath: '/resource/materials' })],
   },
   images: {
     in: './resource/materials/images/*.{svg,png,jpg,jpeg,gif}',
@@ -92,41 +99,70 @@ export const onJson = () => {
   return src(setup.ecmas.inJson).pipe(dest(setup.ecmas.outJson))
 }
 
+export const onStylelint = (done) => {
+  exec("yarn stylelint './resource/styles/**/*.scss'", (err, _stdout, stderr) => {
+    if (err) {
+      console.error(`${logFonts.bold}${logFonts.colorYellow}${stderr}${logFonts.reset}`)
+      done(new Error(`${logFonts.colorRed}Stylelint Failed.${logFonts.reset}`))
+    } else {
+      console.info(`[${logFonts.colorMagenta}${date.format('HH:mm:ss')}${logFonts.reset}] ${logFonts.colorCyan}Stylelint Pass.${logFonts.reset}`)
+      done()
+    }
+  })
+}
+
 // Compile Sass.
-export const onSass = () => {
+export const onSassCompile = (done) => {
   return src([setup.styles.inScss, ...setup.styles.entryPointIgnore], { sourcemaps: true })
-    .pipe(plumber({ errorHandler: notify.onError({ message: 'SCSS Compile Error: <%= error.message %>', onLast: true }) }))
     .pipe(sassGlob({ ignorePaths: setup.styles.globIgnore }))
-    .pipe(sass.sync({ outputStyle: 'expanded' }))
-    .pipe(postCss(setup.styles.postCssLayoutFix))
-    .pipe(stylelint({ reporters: [{ formatter: 'string', console: true }], fix: true }))
+    .pipe(
+      sass.sync({ silenceDeprecations: ['legacy-js-api'], outputStyle: 'expanded' }).on('error', () => {
+        sass.logError
+        done(new Error(`${logFonts.colorRed}Sass Compile Failed.${logFonts.reset}`))
+      }),
+    )
+    .pipe(postCss(setup.styles.postCssSassOptions))
     .pipe(dest(setup.styles.outScss, { sourcemaps: '../maps' }))
 }
 
+export const onSass = series(onStylelint, onSassCompile)
+
 // Minify CSS.
-/* export const onCssmin = () => {
+export const onCssmin = () => {
   return src(setup.styles.inCss)
-    .pipe(postCss(setup.styles.postCssCacheBusting))
+    .pipe(postCss(setup.styles.postCssCssOptions))
     .pipe(cssmin())
     .pipe(rename({ suffix: '.min' }))
     .pipe(dest(setup.styles.outCss))
-}*/
+}
 
 // Convert to Webp.
 export const onWebps = () => {
-  return src(setup.images.inWebps).pipe(webp()).pipe(dest(setup.images.outWebps)).pipe(dest(setup.images.out))
+  return src(setup.images.inWebps, { encoding: false }).pipe(webp()).pipe(dest(setup.images.outWebps)).pipe(dest(setup.images.out))
 }
 
 // Minify Images.
-export const onMinifyImages = () => {
-  return src(setup.images.in)
+export const onMinifyImages = async () => {
+  const imagemin = await import('gulp-imagemin')
+  return src(setup.images.in, { encoding: false })
     .pipe(plumber())
     .pipe(
-      imagemin([
-        pngquant({ quality: [0.65, 0.8], speed: 1 }),
-        mozjpeg({ quality: 80 }),
-        imagemin.gifsicle({ interlaced: false }),
-        imagemin.svgo({ plugins: [{ removeViewBox: true }, { cleanupIDs: false }] }),
+      imagemin.default([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 80, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [
+            {
+              name: 'removeViewBox',
+              active: true,
+            },
+            {
+              name: 'cleanupIDs',
+              active: false,
+            },
+          ],
+        }),
       ]),
     )
     .pipe(dest(setup.images.out))
@@ -140,9 +176,9 @@ export const onManifest = () => {
 
 // When Add Favicon.
 export const onFavicon = () => {
-  return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml']).pipe(
-    dest(setup.favicons.out),
-  )
+  return src(['./resource/materials/favicons/*', '!./resource/materials/favicons/site.webmanifest', '!./resource/materials/favicons/browserconfig.xml'], {
+    encoding: false,
+  }).pipe(dest(setup.favicons.out))
 }
 
 // When Add Basic Auth.
@@ -152,8 +188,8 @@ export const onHtaccess = () => {
 }
 
 // Delete Unnecessary Files.
-export const onDelete = (cb) => {
-  return del(['**/.DS_Store', '!node_modules/**/*'], cb)
+export const onDelete = async (cb) => {
+  return await deleteAsync(['**/.DS_Store', '!node_modules/**/*'], cb)
 }
 
 // For When Building Manually, Delete Compiled Files Before Building. ( When Switching Working Branches. )
@@ -178,7 +214,7 @@ export const onCopy = () => {
 // Build Manually.
 // ECMA / Style / All.
 export const onEcma = onWebpackDev
-export const onStyles = series(onSass /* , onCssmin*/)
+export const onStyles = series(onSass, onCssmin)
 export const onBuild = series(
   onClean,
   parallel(onWebpackPro, onStyles, onWebps, onMinifyImages, (doneReport) => {
