@@ -1,7 +1,6 @@
 name: CI for Preview
 on:
   pull_request:
-    types: synchronize
     branches: main
 
 env:
