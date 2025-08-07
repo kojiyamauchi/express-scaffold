@@ -63,7 +63,8 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "8.39.0",
-    "wait-on": "^8.0.4"
+    "wait-on": "^8.0.4",
+    "zod": "4.0.15"
   },
   "scripts": {
     "dev:browser": "wait-on https://localhost:3000 && browser-sync start --config bs-config.js",
