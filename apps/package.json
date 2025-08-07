@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",
+    "@prisma/client": "6.13.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
@@ -54,10 +55,12 @@
     "nodemon": "^3.1.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
+    "prisma": "6.13.0",
     "puppeteer": "24.15.0",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "8.39.0",
     "wait-on": "^8.0.4"
@@ -71,6 +74,18 @@
     "serve:local": "run-p setup:browser serve",
     "clean": "rimraf build && mkdir build && touch build/.gitkeep",
     "jest": "jest --passWithNoTests",
-    "lint": "eslint --fix --max-warnings 0"
+    "lint": "eslint --fix --max-warnings 0",
+    "prisma:init": "npx prisma init",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:dev": "npx prisma migrate dev",
+    "prisma:migrate:reset": "npx prisma migrate reset",
+    "prisma:migrate:deploy": "npx prisma migrate deploy",
+    "prisma:migrate:status": "npx prisma migrate status",
+    "prisma:push": "npx prisma db push",
+    "prisma:pull": "npx prisma db pull",
+    "prisma:seed": "npx prisma db seed",
+    "prisma:validate": "npx prisma validate",
+    "prisma:format": "npx prisma format",
+    "prisma:studio": "npx prisma studio"
   }
 }
