@@ -6,7 +6,7 @@ import methodOverride from 'method-override'
 import logger from 'morgan'
 import path from 'path'
 
-import { routes } from './routes'
+import { routes } from '@/routes'
 
 type ErrorType = {
   status: number
