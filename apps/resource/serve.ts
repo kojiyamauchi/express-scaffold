@@ -2,7 +2,7 @@ import fs from 'fs'
 import https from 'https'
 import path from 'path'
 
-import app from './app'
+import app from '@/app'
 
 /* TBD for Http Server.
 import http from 'http'
@@ -13,7 +13,7 @@ server.listen(3000, () => console.info('Http Application Started'))
 
 const setupHttps = {
   key: fs.readFileSync(path.resolve(__dirname, '../server.key')),
-  cert: fs.readFileSync(path.resolve(__dirname, '../server.cert'))
+  cert: fs.readFileSync(path.resolve(__dirname, '../server.cert')),
 }
 const server = https.createServer(setupHttps, app)
 server.listen(3000, () => console.info('Https Application Started.'))

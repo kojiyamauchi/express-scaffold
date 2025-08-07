@@ -2,6 +2,9 @@ apps/**/*.{ts,mjs}:
   - yarn workspace apps prettier --write
   - yarn workspace apps eslint --fix --max-warnings 0
 apps/**/*.js: yarn workspace apps prettier --write
+apps/prisma/schema.prisma:
+  - yarn prisma:validate
+  - yarn prisma:format
 client/**/*.{ts,mjs}:
   - yarn workspace client prettier --write
   - yarn workspace client eslint --fix --max-warnings 0

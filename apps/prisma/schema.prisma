@@ -1,0 +1,19 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  url       String   @db.VarChar(255)
+  phone     String   @db.VarChar(255)
+  email     String   @db.VarChar(255)
+  create_at DateTime @db.DateTime(0)
+  update_at DateTime @db.DateTime(0)
+}

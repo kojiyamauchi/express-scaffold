@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { controllers } from '../controllers'
+import { controllers } from '@/controllers'
 
 const router = express.Router()
 
@@ -16,5 +16,5 @@ export const routes = {
   // API.
   insert: router.post('/api/user/', controllers.insert),
   update: router.put('/api/user/:id', controllers.update),
-  delete: router.delete('/api/user/:id', controllers.delete)
+  delete: router.delete('/api/user/:id', controllers.delete),
 }

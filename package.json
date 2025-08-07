@@ -46,6 +46,18 @@
     "clean": "run-p \"clean:*\"",
     "serve": "yarn workspace apps serve",
     "serve:local": "yarn workspace apps serve:local",
-    "ui": "yarn upgrade-interactive"
+    "ui": "yarn upgrade-interactive",
+    "prisma:init": "yarn workspace apps prisma:init",
+    "prisma:generate": "yarn workspace apps prisma:generate",
+    "prisma:migrate:dev": "yarn workspace apps prisma:migrate:dev",
+    "prisma:migrate:reset": "yarn workspace apps prisma:migrate:reset",
+    "prisma:migrate:deploy": "yarn workspace apps prisma:migrate:deploy",
+    "prisma:migrate:status": "yarn workspace apps prisma:migrate:status",
+    "prisma:push": "yarn workspace apps prisma:push",
+    "prisma:pull": "yarn workspace apps prisma:pull",
+    "prisma:seed": "yarn workspace apps prisma:seed",
+    "prisma:validate": "yarn workspace apps prisma:validate",
+    "prisma:format": "yarn workspace apps prisma:format",
+    "prisma:studio": "yarn workspace apps prisma:studio"
   }
 }
