@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import path from 'path'
 
-import { models } from '../models'
+import { models } from '@/models'
+
 const deliveryDir = path.resolve(`${__dirname}/` + '../../../delivery/')
 console.info('Looking For Delivery Dir From Controllers.\n', deliveryDir)
 console.info(models.deliveryDir())
