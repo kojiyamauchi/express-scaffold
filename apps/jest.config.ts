@@ -15,8 +15,6 @@ const config: Config.InitialOptions = {
     },
   },
   testMatch: ['**/resource/tests/**/*.test.+(ts|js)'],
-  // turn off when executing by act
-  preset: 'jest-puppeteer',
 }
 
 export default config
