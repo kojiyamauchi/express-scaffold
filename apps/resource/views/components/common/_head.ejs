@@ -1,4 +1,7 @@
-<% if (props.redirect) { %>
+<% if (props.redirect === 400) { %>
+<meta http-equiv="refresh" content="3;URL=/user-list">
+<% } %>
+<% if (props.redirect === 500) { %>
 <meta http-equiv="refresh" content="3;URL=/">
 <% } %>
 <meta charset="UTF-8">
