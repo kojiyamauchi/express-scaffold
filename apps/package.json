@@ -11,9 +11,6 @@
     "npm": "use yarn instead.",
     "yarn": "4.6.0"
   },
-  "prisma": {
-    "schema": "resource/prisma/schema.prisma"
-  },
   "dependencies": {
     "express": "^5.1.0"
   },
