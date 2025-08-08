@@ -4,18 +4,19 @@ const config: Config.InitialOptions = {
   testEnvironment: 'jest-environment-jsdom',
   moduleFileExtensions: ['ts', 'js'],
   moduleNameMapper: {
-    '^@/(.+)': '<rootDir>/resource/$1'
+    '^@/(.+)': '<rootDir>/resource/$1',
   },
   transform: {
-    '^.+\\.(ts)$': 'ts-jest'
+    '^.+\\.(ts)$': 'ts-jest',
   },
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json'
-    }
+      tsconfig: 'tsconfig.json',
+    },
   },
   testMatch: ['**/resource/tests/**/*.test.+(ts|js)'],
-  preset: 'jest-puppeteer'
+  // turn off when executing by act
+  preset: 'jest-puppeteer',
 }
 
 export default config
