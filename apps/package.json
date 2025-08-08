@@ -11,9 +11,6 @@
     "npm": "use yarn instead.",
     "yarn": "4.6.0"
   },
-  "prisma": {
-    "schema": "resource/prisma/schema.prisma"
-  },
   "dependencies": {
     "express": "^5.1.0"
   },
@@ -79,17 +76,17 @@
     "clean": "rimraf build && mkdir build && touch build/.gitkeep",
     "jest": "jest --passWithNoTests",
     "lint": "eslint --fix --max-warnings 0",
-    "prisma:init": "npx prisma init",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate:dev": "npx prisma migrate dev",
-    "prisma:migrate:reset": "npx prisma migrate reset",
-    "prisma:migrate:deploy": "npx prisma migrate deploy",
-    "prisma:migrate:status": "npx prisma migrate status",
-    "prisma:push": "npx prisma db push",
-    "prisma:pull": "npx prisma db pull",
-    "prisma:seed": "npx prisma db seed",
-    "prisma:validate": "npx prisma validate",
-    "prisma:format": "npx prisma format",
-    "prisma:studio": "npx prisma studio"
+    "prisma:init": "prisma init",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:reset": "prisma migrate reset",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:status": "prisma migrate status",
+    "prisma:push": "prisma db push",
+    "prisma:pull": "prisma db pull",
+    "prisma:seed": "prisma db seed",
+    "prisma:validate": "prisma validate",
+    "prisma:format": "prisma format",
+    "prisma:studio": "prisma studio"
   }
 }
