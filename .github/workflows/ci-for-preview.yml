@@ -238,7 +238,7 @@ jobs:
       #   if: env.LAUNCH_TYPECHECK == 'on'
       #   run: yarn typecheck:client
 
-    jestApps:
+  jestApps:
     name: Jest Apps
     needs: setup
     runs-on: ubuntu-latest
