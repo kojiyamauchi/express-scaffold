@@ -1,20 +1,20 @@
 <%
 props = {
-  title: '500 Internal Server Error | Express Scaffold',
-  description : '500 Internal Server Error Page | Express Scaffold.',
+  title: '400 Validate Error | Express Scaffold',
+  description : '400 Validate Error Page | Express Scaffold.',
   ogpURL: 'Add OGP URL.',
   ogpSitename: 'Add OGP Site Name.',
   ogpTitle: 'Add OGP Title.',
   ogpDescription: 'Add OGP Description.',
   ogpImage: 'Add OGP Images File Path.',
   cssPlugins: false,
-  cssCoreFile: 'server-error',
+  cssCoreFile: 'validate-error',
   ecmaPolyfill: false,
   ecmaModules: false,
   ecmaGlobal: true,
   ecmaCore: 'core',
-  pages: 'server-error',
-  redirect: 500
+  pages: 'validate-error',
+  redirect: 400
 }
 %>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ props = {
     <!-- Main Contents -->
     <main>
       <!-- Heading -->
-      <%- include ('components/common/_heading', { className: props.pages, heading: heading }) %>
+      <%- include ('components/pages/validate-error/_heading', { className: props.pages, heading: heading }) %>
       <!-- /Heading -->
     </main>
     <!-- /Main Contents -->

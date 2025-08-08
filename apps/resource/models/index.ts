@@ -3,7 +3,7 @@ import type { QueryError, ResultSetHeader, RowDataPacket } from 'mysql2'
 import path from 'path'
 
 import { db, prisma } from '@/libs'
-import type { User, UserList } from '@/schemas/User'
+import type { User, UserList } from '@/schemas'
 
 void (async (): Promise<void> => {
   const result = await prisma.user.findMany()

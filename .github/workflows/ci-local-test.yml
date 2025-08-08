@@ -222,6 +222,72 @@ jobs:
       #   if: env.LAUNCH_TYPECHECK == 'on'
       #   run: yarn typecheck:client
 
+  jestApps:
+    name: Jest Apps
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Execution Environment for Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version ${{ env.YARN_VERSION }}
+      - name: Restore Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Set Env
+        run: |
+          if ls apps/resource/tests/**/*.test.ts > /dev/null 2>&1 || ls apps/resource/tests/**/*.test.js > /dev/null 2>&1
+          then
+              echo "FILE_EXISTS=on" >> $GITHUB_ENV
+          else
+              echo "FILE_EXISTS=off" >> $GITHUB_ENV
+          fi
+        shell: bash
+      - name: Do Jest Apps
+        if: env.FILE_EXISTS == 'on'
+        run: yarn jest:apps
+
+  jestClient:
+    name: Jest Client
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Execution Environment for Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Set Yarn Version
+        run: |
+          corepack enable
+          yarn set version ${{ env.YARN_VERSION }}
+      - name: Restore Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Set Env
+        run: |
+          if ls client/resource/tests/**/*.test.ts > /dev/null 2>&1 || ls client/resource/tests/**/*.test.js > /dev/null 2>&1
+          then
+              echo "FILE_EXISTS=on" >> $GITHUB_ENV
+          else
+              echo "FILE_EXISTS=off" >> $GITHUB_ENV
+          fi
+        shell: bash
+      - name: Do Jest Client
+        if: env.FILE_EXISTS == 'on'
+        run: yarn jest:client
+
   build:
     name: Build Test
     needs: setup

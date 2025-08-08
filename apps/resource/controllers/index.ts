@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import path from 'path'
 
 import { models } from '@/models'
+import { userSchema } from '@/schemas'
 
 const deliveryDir = path.resolve(`${__dirname}/` + '../../../delivery/')
 console.info('Looking For Delivery Dir From Controllers.\n', deliveryDir)
@@ -56,12 +57,27 @@ export const controllers = {
 
   // API.
   insert: async (req: Request, res: Response): Promise<void> => {
-    const formatInsert = {
-      name: req.body.name,
-      url: req.body.url,
-      phone: `${req.body.phone1}-${req.body.phone2}-${req.body.phone3}`,
-      email: req.body.email,
+    const result = userSchema.safeParse(req.body)
+    if (!result.success) {
+      const errors = result.error.issues.map((error) => {
+        const result = { path: error.path.join('.'), message: error.message }
+        return result
+      })
+      const paths = errors.map((error) => error.path).join(', ')
+      const messages = errors.map((error) => error.message).join('<br>')
+      const formatError = `フォーム: ${paths} <br> ${messages}`
+      res.status(400)
+      res.render('validate-error', { heading: formatError })
+      return
     }
+
+    const formatInsert = {
+      name: result.data.name,
+      url: result.data.url,
+      phone: `${result.data.phone1}-${result.data.phone2}-${result.data.phone3}`,
+      email: result.data.email,
+    }
+
     try {
       const result = await models.insert([formatInsert.name, formatInsert.url, formatInsert.phone, formatInsert.email])
       if ('insertId' in result) {
@@ -73,13 +89,28 @@ export const controllers = {
     }
   },
   update: async (req: Request, res: Response): Promise<void> => {
+    const result = userSchema.safeParse(req.body)
+    if (!result.success) {
+      const errors = result.error.issues.map((error) => {
+        const result = { path: error.path.join('.'), message: error.message }
+        return result
+      })
+      const paths = errors.map((error) => error.path).join(', ')
+      const messages = errors.map((error) => error.message).join('<br>')
+      const formatError = `フォーム: ${paths} <br> ${messages}`
+      res.status(400)
+      res.render('validate-error', { heading: formatError })
+      return
+    }
+
     const formatUpdate = {
       id: req.params.id,
-      name: req.body.name,
-      url: req.body.url,
-      phone: `${req.body.phone1}-${req.body.phone2}-${req.body.phone3}`,
-      email: req.body.email,
+      name: result.data.name,
+      url: result.data.url,
+      phone: `${result.data.phone1}-${result.data.phone2}-${result.data.phone3}`,
+      email: result.data.email,
     }
+
     try {
       await models.update([formatUpdate.name, formatUpdate.url, formatUpdate.phone, formatUpdate.email, formatUpdate.id])
       res.redirect(`/user/${formatUpdate.id}`)
