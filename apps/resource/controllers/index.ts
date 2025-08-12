@@ -1,8 +1,14 @@
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import { Request, Response } from 'express'
 import path from 'path'
 
 import { models } from '@/models'
 import { userSchema } from '@/schemas'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const deliveryDir = path.resolve(`${__dirname}/` + '../../../delivery/')
 console.info('Looking For Delivery Dir From Controllers.\n', deliveryDir)
@@ -18,8 +24,21 @@ export const controllers = {
   userList: async (_req: Request, res: Response): Promise<void> => {
     try {
       const userList = await models.userList()
+
       if (Array.isArray(userList)) {
-        res.render('./user-list/index.ejs', { heading: 'User List.', userList: userList })
+        const formatUserList = userList.map((user) => {
+          return {
+            id: user.id,
+            name: user.name,
+            url: user.url,
+            phone: user.phone,
+            email: user.email,
+            create_at: dayjs.utc(user.create_at).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss'),
+            update_at: dayjs.utc(user.update_at).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss'),
+          }
+        })
+
+        res.render('./user-list/index.ejs', { heading: 'User List.', userList: formatUserList })
       }
     } catch {
       res.status(500)
@@ -33,8 +52,8 @@ export const controllers = {
       if (Array.isArray(results)) {
         const [user] = results
         const formatTimestamp = {
-          createAt: user.create_at,
-          updateAt: user.update_at,
+          createAt: dayjs.utc(user.create_at).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss'),
+          updateAt: dayjs.utc(user.update_at).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss'),
         }
         const [phone1, phone2, phone3] = user.phone.split('-')
         const formatUser = {
