@@ -1,0 +1,227 @@
+import { PrismaClient } from '@prisma/client'
+import dayjs from 'dayjs'
+
+const prisma = new PrismaClient()
+
+void (async (): Promise<void> => {
+  await prisma.user.createMany({
+    data: [
+      {
+        name: 'aaaa aaaa',
+        url: 'https://aaa.com',
+        phone: '000-0000-0000',
+        email: 'aaa@aaa.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'bbbb bbbb',
+        url: 'https://bbb.com',
+        phone: '111-1111-1111',
+        email: 'bbb@bbb.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'cccc cccc',
+        url: 'https://ccc.com',
+        phone: '222-2222-2222',
+        email: 'ccc@ccc.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'dddd dddd',
+        url: 'https://ddd.com',
+        phone: '333-3333-3333',
+        email: 'ddd@ddd.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'eeee eeee',
+        url: 'https://eee.com',
+        phone: '444-4444-4444',
+        email: 'eee@eee.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'ffff ffff',
+        url: 'https://fff.com',
+        phone: '555-5555-5555',
+        email: 'fff@fff.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'gggg gggg',
+        url: 'https://ggg.com',
+        phone: '666-6666-6666',
+        email: 'ggg@ggg.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'hhhh hhhh',
+        url: 'https://hhh.com',
+        phone: '777-7777-7777',
+        email: 'hhh@hhh.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'iiii iiii',
+        url: 'https://iii.com',
+        phone: '888-8888-8888',
+        email: 'iii@iii.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'jjjj jjjj',
+        url: 'https://jjj.com',
+        phone: '999-9999-9999',
+        email: 'jjj@jjj.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'kkkk kkkk',
+        url: 'https://kkk.com',
+        phone: '***-****-****',
+        email: 'kkk@kkk.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'llll llll',
+        url: 'https://lll.com',
+        phone: '***-****-****',
+        email: 'lll@lll.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'mmmm mmmm',
+        url: 'https://mmm.com',
+        phone: '***-****-****',
+        email: 'mmm@mmm.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'nnnn nnnn',
+        url: 'https://nnn.com',
+        phone: '***-****-****',
+        email: 'nnn@nnn.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'oooo oooo',
+        url: 'https://ooo.com',
+        phone: '***-****-****',
+        email: 'ooo@ooo.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'pppp pppp',
+        url: 'https://ppp.com',
+        phone: '***-****-****',
+        email: 'ppp@ppp.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'qqqq qqqq',
+        url: 'https://qqq.com',
+        phone: '***-****-****',
+        email: 'qqq@qqq.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'rrrr rrrr',
+        url: 'https://rrr.com',
+        phone: '***-****-****',
+        email: 'rrr@rrr.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'ssss ssss',
+        url: 'https://sss.com',
+        phone: '***-****-****',
+        email: 'sss@sss.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'tttt tttt',
+        url: 'https://ttt.com',
+        phone: '***-****-****',
+        email: 'ttt@ttt.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'uuuu uuuu',
+        url: 'https://uuu.com',
+        phone: '***-****-****',
+        email: 'uuu@uuu.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'vvvv vvvv',
+        url: 'https://vvv.com',
+        phone: '***-****-****',
+        email: 'vvv@vvv.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'wwww wwww',
+        url: 'https://www.com',
+        phone: '***-****-****',
+        email: 'www@www.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'xxxx xxxx',
+        url: 'https://xxx.com',
+        phone: '***-****-****',
+        email: 'xxx@xxx.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'yyyy yyyy',
+        url: 'https://yyy.com',
+        phone: '***-****-****',
+        email: 'yyy@yyy.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+      {
+        name: 'zzzz zzzz',
+        url: 'https://zzz.com',
+        phone: '***-****-****',
+        email: 'zzz@zzz.com',
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+    ],
+  })
+})()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
