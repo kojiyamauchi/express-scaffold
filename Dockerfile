@@ -1,6 +1,10 @@
 FROM node:22.18.0-alpine3.21
 WORKDIR /application
 
+RUN apk add --no-cache tzdata \
+    && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+    && echo "Asia/Tokyo" > /etc/timezone
+
 COPY ./package.json ./
 COPY ./yarn.lock ./
 COPY ./apps ./apps
