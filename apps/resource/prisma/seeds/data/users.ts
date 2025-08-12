@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 const prisma = new PrismaClient()
 
-export const user = async (): Promise<void> => {
+export const users = async (): Promise<void> => {
   await prisma.user.createMany({
     data: [
       {

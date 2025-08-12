@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 
-import { user } from './user'
+import { users } from './data'
 
 const prisma = new PrismaClient()
 
 void (async (): Promise<void> => {
-  await user()
+  await users()
 })()
   .then(async () => {
     await prisma.$disconnect()
