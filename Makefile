@@ -21,6 +21,10 @@ stop:
 down:
 	docker compose down
 
+.PHONY: app
+app:
+	docker compose exec -it application sh
+
 .PHONY: mysql
 mysql:
 	docker compose exec mysql /bin/bash
