@@ -87,6 +87,6 @@
     "prisma:seed": "prisma db seed",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio -b 'Google Chrome Canary'"
   }
 }
