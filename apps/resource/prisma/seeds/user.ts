@@ -215,5 +215,6 @@ export const user = async (): Promise<void> => {
         update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
       },
     ],
+    skipDuplicates: true,
   })
 }
