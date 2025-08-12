@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      TZ: Asia/Tokyo
     volumes:
       - ./:/application
     ports:
@@ -21,8 +23,7 @@ services:
       - ${DB_PORT}:3306
     env_file: .env
     environment:
-      TZ: Asia/Tokyo
-      PGTZ: Asia/Tokyo
+      TZ: UTC
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
       MYSQL_DATABASE: ${DB_NAME}
       #MYSQL_USER: ${DB_USER}

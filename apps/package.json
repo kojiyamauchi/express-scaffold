@@ -33,6 +33,7 @@
     "browser-sync": "^3.0.4",
     "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
+    "dayjs": "1.11.13",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "eslint": "^9.32.0",
@@ -87,6 +88,6 @@
     "prisma:seed": "prisma db seed",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio -b 'Google Chrome Canary'"
   }
 }
