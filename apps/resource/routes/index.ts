@@ -17,4 +17,10 @@ export const routes = {
   insert: router.post('/api/user/', controllers.insert),
   update: router.put('/api/user/:id', controllers.update),
   delete: router.delete('/api/user/:id', controllers.delete),
+
+  // ORM API
+  ormUsers: router.get('/api/orm/users', controllers.ormUsers),
+  ormItems: router.get('/api/orm/items', controllers.ormItems),
+  ormOrders: router.get('/api/orm/orders', controllers.ormOrders),
+  ormOrderItems: router.get('/api/orm/order-items', controllers.ormOrderItems),
 }
