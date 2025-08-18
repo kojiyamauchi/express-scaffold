@@ -188,6 +188,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Prisma Generate
+        run: yarn prisma:generate
       # Currently, tsc && reviewdog is will not display properly in conversation review.
       - name: Do Type Check Apps
         if: env.LAUNCH_TYPECHECK == 'on'
