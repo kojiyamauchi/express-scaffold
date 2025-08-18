@@ -16,4 +16,34 @@ model User {
   email     String   @db.VarChar(255)
   create_at DateTime @db.DateTime(0)
   update_at DateTime @db.DateTime(0)
+
+  Order Order[]
+}
+
+model Item {
+  id           Int     @id @default(autoincrement())
+  product_name String
+  price        Decimal
+
+  order_items OrderItem[]
+}
+
+model OrderItem {
+  id       Int @id @default(autoincrement())
+  order_id Int
+  item_id  Int
+  quantity Int
+
+  item  Item  @relation(fields: [item_id], references: [id])
+  order Order @relation(fields: [order_id], references: [id])
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  order_date  DateTime
+  total_price Decimal
+
+  user        User        @relation(fields: [userId], references: [id])
+  order_items OrderItem[]
 }

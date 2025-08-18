@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 const prisma = new PrismaClient()
 
-void (async (): Promise<void> => {
+export const users = async (): Promise<void> => {
   await prisma.user.createMany({
     data: [
       {
@@ -215,13 +215,6 @@ void (async (): Promise<void> => {
         update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
       },
     ],
+    skipDuplicates: true,
   })
-})()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+}
