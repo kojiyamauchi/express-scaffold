@@ -70,6 +70,11 @@ app.use('/insert-user', routes.insertUser)
 /* API */
 app.use('/api/user', routes.insert)
 app.use('/api/user/:id', [routes.update, routes.delete])
+/* ORM API */
+app.use('/api/orm/users', routes.ormUsers)
+app.use('/api/orm/items', routes.ormItems)
+app.use('/api/orm/orders', routes.ormOrders)
+app.use('/api/orm/order-items', routes.ormOrderItems)
 
 // Catch 404 and Forward to Error Handler
 app.use((_req, _res, next) => next(createError(404)))
