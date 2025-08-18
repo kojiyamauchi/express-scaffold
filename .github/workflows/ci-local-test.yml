@@ -174,6 +174,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+      - name: Prisma Generate
+        run: yarn prisma:generate
       # Currently, tsc && reviewdog is will not display properly in conversation review.
       - name: Do Type Check Apps
         uses: EPMatt/reviewdog-action-tsc@v1
@@ -310,5 +312,7 @@ jobs:
           key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: Install Global Gulp For Client.
         run: yarn workspace client add global gulp-cli
+      - name: Prisma Generate
+        run: yarn prisma:generate
       - name: Do Build Test
         run: yarn build
