@@ -17,7 +17,7 @@ model User {
   create_at DateTime @db.DateTime(0)
   update_at DateTime @db.DateTime(0)
 
-  Order Order[]
+  order Order[]
 }
 
 model Item {
