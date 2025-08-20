@@ -20,6 +20,7 @@ export const ormModels = {
   orders: async (): Promise<Order[]> => {
     return prisma.order.findMany({
       include: {
+        user: true,
         order_items: true,
       },
     })
