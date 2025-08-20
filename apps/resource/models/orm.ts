@@ -4,6 +4,10 @@ import { prisma } from '@/libs'
 
 export const ormModels = {
   users: async (id: number | undefined): Promise<User[]> => {
+    if (typeof id === 'number' && isNaN(id)) {
+      return []
+    }
+
     return prisma.user.findMany({
       include: {
         order: true,
@@ -14,6 +18,10 @@ export const ormModels = {
     })
   },
   items: async (id: number | undefined): Promise<Item[]> => {
+    if (typeof id === 'number' && isNaN(id)) {
+      return []
+    }
+
     return prisma.item.findMany({
       include: {
         order_items: true,
@@ -24,6 +32,10 @@ export const ormModels = {
     })
   },
   orders: async (id: number | undefined): Promise<Order[]> => {
+    if (typeof id === 'number' && isNaN(id)) {
+      return []
+    }
+
     return prisma.order.findMany({
       include: {
         user: true,
@@ -35,6 +47,10 @@ export const ormModels = {
     })
   },
   orderItems: async (id: number | undefined): Promise<OrderItem[]> => {
+    if (typeof id === 'number' && isNaN(id)) {
+      return []
+    }
+
     return prisma.orderItem.findMany({
       include: {
         item: true,
