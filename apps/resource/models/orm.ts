@@ -61,4 +61,62 @@ export const ormModels = {
       },
     })
   },
+  user: async (id: number): Promise<User | null> => {
+    if (isNaN(id)) {
+      return null
+    }
+
+    return prisma.user.findUnique({
+      include: {
+        order: true,
+      },
+      where: {
+        id: id,
+      },
+    })
+  },
+  item: async (id: number): Promise<Item | null> => {
+    if (isNaN(id)) {
+      return null
+    }
+
+    return prisma.item.findUnique({
+      include: {
+        order_items: true,
+      },
+      where: {
+        id: id,
+      },
+    })
+  },
+  order: async (id: number): Promise<Order | null> => {
+    if (isNaN(id)) {
+      return null
+    }
+
+    return prisma.order.findUnique({
+      include: {
+        user: true,
+        order_items: true,
+      },
+      where: {
+        id: id,
+      },
+    })
+  },
+  orderItem: async (id: number): Promise<OrderItem | null> => {
+    if (isNaN(id)) {
+      return null
+    }
+
+    return prisma.orderItem.findUnique({
+      include: {
+        item: true,
+        order: true,
+      },
+      where: {
+        id: id,
+      },
+    })
+  },
 }
