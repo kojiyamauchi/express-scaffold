@@ -13,26 +13,35 @@ export const ormModels = {
       },
     })
   },
-  items: async (): Promise<Item[]> => {
+  items: async (id: number | undefined): Promise<Item[]> => {
     return prisma.item.findMany({
       include: {
         order_items: true,
       },
+      where: {
+        id: id,
+      },
     })
   },
-  orders: async (): Promise<Order[]> => {
+  orders: async (id: number | undefined): Promise<Order[]> => {
     return prisma.order.findMany({
       include: {
         user: true,
         order_items: true,
       },
+      where: {
+        id: id,
+      },
     })
   },
-  orderItems: async (): Promise<OrderItem[]> => {
+  orderItems: async (id: number | undefined): Promise<OrderItem[]> => {
     return prisma.orderItem.findMany({
       include: {
         item: true,
         order: true,
+      },
+      where: {
+        id: id,
       },
     })
   },

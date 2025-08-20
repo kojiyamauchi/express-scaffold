@@ -151,42 +151,63 @@ export const controllers = {
 
   // ORM API.
   ormUsers: async (req: Request, res: Response): Promise<void> => {
-    const id = ((): number | undefined => {
-      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id))) {
+    const userId = ((): number | undefined => {
+      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
         return Number(req.query.id)
       }
       return undefined
     })()
 
     try {
-      const result = await ormModels.users(id)
+      const result = await ormModels.users(userId)
       res.json(result)
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormItems: async (_req: Request, res: Response): Promise<void> => {
+  ormItems: async (req: Request, res: Response): Promise<void> => {
+    const itemId = ((): number | undefined => {
+      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.items()
+      const result = await ormModels.items(itemId)
       res.json(result)
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormOrders: async (_req: Request, res: Response): Promise<void> => {
+  ormOrders: async (req: Request, res: Response): Promise<void> => {
+    const orderId = ((): number | undefined => {
+      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.orders()
+      const result = await ormModels.orders(orderId)
       res.json(result)
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormOrderItems: async (_req: Request, res: Response): Promise<void> => {
+  ormOrderItems: async (req: Request, res: Response): Promise<void> => {
+    const orderItemId = ((): number | undefined => {
+      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.orderItems()
+      const result = await ormModels.orderItems(orderItemId)
       res.json(result)
     } catch {
       res.status(500)
