@@ -150,37 +150,153 @@ export const controllers = {
   },
 
   // ORM API.
-  ormUsers: async (_req: Request, res: Response): Promise<void> => {
+  ormUsers: async (req: Request, res: Response): Promise<void> => {
+    const userId = ((): number | undefined => {
+      if (typeof req.query.id === 'string') {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.users()
-      res.json(result)
+      const result = await ormModels.users(userId)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormItems: async (_req: Request, res: Response): Promise<void> => {
+  ormItems: async (req: Request, res: Response): Promise<void> => {
+    const itemId = ((): number | undefined => {
+      if (typeof req.query.id === 'string') {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.items()
-      res.json(result)
+      const result = await ormModels.items(itemId)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormOrders: async (_req: Request, res: Response): Promise<void> => {
+  ormOrders: async (req: Request, res: Response): Promise<void> => {
+    const orderId = ((): number | undefined => {
+      if (typeof req.query.id === 'string') {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.orders()
-      res.json(result)
+      const result = await ormModels.orders(orderId)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
-  ormOrderItems: async (_req: Request, res: Response): Promise<void> => {
+  ormOrderItems: async (req: Request, res: Response): Promise<void> => {
+    const orderItemId = ((): number | undefined => {
+      if (typeof req.query.id === 'string') {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.orderItems()
-      res.json(result)
+      const result = await ormModels.orderItems(orderItemId)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormUser: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.user(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormItem: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.item(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormOrder: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.order(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormOrderItem: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.orderItem(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })

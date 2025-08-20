@@ -23,4 +23,8 @@ export const routes = {
   ormItems: router.get('/api/orm/items', controllers.ormItems),
   ormOrders: router.get('/api/orm/orders', controllers.ormOrders),
   ormOrderItems: router.get('/api/orm/order-items', controllers.ormOrderItems),
+  ormUser: router.get('/api/orm/user', controllers.ormUser),
+  ormItem: router.get('/api/orm/item', controllers.ormItem),
+  ormOrder: router.get('/api/orm/order', controllers.ormOrder),
+  ormOrderItem: router.get('/api/orm/order-item', controllers.ormOrderItem),
 }
