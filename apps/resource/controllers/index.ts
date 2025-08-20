@@ -150,9 +150,16 @@ export const controllers = {
   },
 
   // ORM API.
-  ormUsers: async (_req: Request, res: Response): Promise<void> => {
+  ormUsers: async (req: Request, res: Response): Promise<void> => {
+    const id = ((): number | undefined => {
+      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id))) {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
     try {
-      const result = await ormModels.users()
+      const result = await ormModels.users(id)
       res.json(result)
     } catch {
       res.status(500)

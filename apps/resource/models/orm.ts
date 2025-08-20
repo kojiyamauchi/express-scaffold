@@ -3,10 +3,13 @@ import { Item, Order, OrderItem, User } from '@prisma/client'
 import { prisma } from '@/libs'
 
 export const ormModels = {
-  users: async (): Promise<User[]> => {
+  users: async (id: number | undefined): Promise<User[]> => {
     return prisma.user.findMany({
       include: {
         order: true,
+      },
+      where: {
+        id: id,
       },
     })
   },
