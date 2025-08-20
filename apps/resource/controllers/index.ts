@@ -152,7 +152,7 @@ export const controllers = {
   // ORM API.
   ormUsers: async (req: Request, res: Response): Promise<void> => {
     const userId = ((): number | undefined => {
-      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+      if (typeof req.query.id === 'string') {
         return Number(req.query.id)
       }
       return undefined
@@ -160,7 +160,11 @@ export const controllers = {
 
     try {
       const result = await ormModels.users(userId)
-      res.json(result)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
@@ -168,7 +172,7 @@ export const controllers = {
   },
   ormItems: async (req: Request, res: Response): Promise<void> => {
     const itemId = ((): number | undefined => {
-      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+      if (typeof req.query.id === 'string') {
         return Number(req.query.id)
       }
       return undefined
@@ -176,7 +180,11 @@ export const controllers = {
 
     try {
       const result = await ormModels.items(itemId)
-      res.json(result)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
@@ -184,7 +192,7 @@ export const controllers = {
   },
   ormOrders: async (req: Request, res: Response): Promise<void> => {
     const orderId = ((): number | undefined => {
-      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+      if (typeof req.query.id === 'string') {
         return Number(req.query.id)
       }
       return undefined
@@ -192,7 +200,11 @@ export const controllers = {
 
     try {
       const result = await ormModels.orders(orderId)
-      res.json(result)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
@@ -200,7 +212,7 @@ export const controllers = {
   },
   ormOrderItems: async (req: Request, res: Response): Promise<void> => {
     const orderItemId = ((): number | undefined => {
-      if (typeof req.query.id === 'string' && !isNaN(Number(req.query.id)) && Number(req.query.id) > 0) {
+      if (typeof req.query.id === 'string') {
         return Number(req.query.id)
       }
       return undefined
@@ -208,7 +220,11 @@ export const controllers = {
 
     try {
       const result = await ormModels.orderItems(orderItemId)
-      res.json(result)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
     } catch {
       res.status(500)
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
