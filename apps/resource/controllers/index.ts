@@ -230,4 +230,76 @@ export const controllers = {
       res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
     }
   },
+  ormUser: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.user(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormItem: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.item(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormOrder: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.order(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
+  ormOrderItem: async (req: Request, res: Response): Promise<void> => {
+    if (req.query.id === undefined) {
+      res.send('Enter query parameter id.')
+      return
+    }
+
+    try {
+      const result = await ormModels.orderItem(Number(req.query.id))
+      if (result !== null) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
 }
