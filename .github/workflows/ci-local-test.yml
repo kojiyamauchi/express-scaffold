@@ -253,6 +253,8 @@ jobs:
               echo "FILE_EXISTS=off" >> $GITHUB_ENV
           fi
         shell: bash
+      - name: Prisma Generate
+        run: yarn prisma:generate
       - name: Do Jest Apps
         if: env.FILE_EXISTS == 'on'
         run: yarn jest:apps
