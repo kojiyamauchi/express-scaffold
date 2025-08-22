@@ -228,6 +228,15 @@ jobs:
     name: Jest Apps
     needs: setup
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.1
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: example
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -253,9 +262,17 @@ jobs:
               echo "FILE_EXISTS=off" >> $GITHUB_ENV
           fi
         shell: bash
+      - name: Run Prisma Migrations
+        run: yarn prisma:migrate:dev --name test-migration
+        env:
+          DATABASE_URL: mysql://root:root@localhost:3306/example
+      - name: Prisma Generate
+        run: yarn prisma:generate
       - name: Do Jest Apps
         if: env.FILE_EXISTS == 'on'
         run: yarn jest:apps
+        env:
+          DATABASE_URL: mysql://root:root@localhost:3306/example
 
   jestClient:
     name: Jest Client
