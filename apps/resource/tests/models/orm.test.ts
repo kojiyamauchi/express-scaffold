@@ -9,6 +9,7 @@ jest.mock('@/libs', () => ({
     user: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
+      create: jest.fn(),
     },
     item: {
       findMany: jest.fn(),
@@ -29,6 +30,7 @@ const mockedPrisma = {
   user: {
     findMany: prisma.user.findMany as jest.MockedFunction<typeof prisma.user.findMany>,
     findUnique: prisma.user.findUnique as jest.MockedFunction<typeof prisma.user.findUnique>,
+    create: prisma.user.create as jest.MockedFunction<typeof prisma.user.create>,
   },
   item: {
     findMany: prisma.item.findMany as jest.MockedFunction<typeof prisma.item.findMany>,
@@ -412,6 +414,65 @@ describe('ormModels', (): void => {
       const result = await ormModels.orderItem(1)
 
       expect(result).toBeNull()
+    })
+  })
+
+  describe('createUser', (): void => {
+    it('creates a new user with correct parameters', async (): Promise<void> => {
+      const mockInputUser = {
+        name: 'Test User',
+        url: 'https://example.com',
+        phone: '090-1234-5678',
+        email: 'test@example.com',
+      }
+
+      const mockCreatedUser: User = {
+        id: 1,
+        name: 'Test User',
+        url: 'https://example.com',
+        phone: '090-1234-5678',
+        email: 'test@example.com',
+        create_at: new Date('2023-01-01T00:00:00Z'),
+        update_at: new Date('2023-01-01T00:00:00Z'),
+      }
+      mockedPrisma.user.create.mockResolvedValue(mockCreatedUser)
+
+      const result = await ormModels.createUser(mockInputUser)
+
+      expect(mockedPrisma.user.create).toHaveBeenCalledWith({
+        data: {
+          name: 'Test User',
+          url: 'https://example.com',
+          phone: '090-1234-5678',
+          email: 'test@example.com',
+          create_at: expect.any(String),
+          update_at: expect.any(String),
+        },
+      })
+      expect(result).toEqual(mockCreatedUser)
+    })
+
+    it('formats timestamps correctly', async (): Promise<void> => {
+      const mockInputUser = {
+        name: 'Test User',
+        url: 'https://example.com',
+        phone: '090-1234-5678',
+        email: 'test@example.com',
+      }
+
+      const mockCreatedUser: User = {
+        id: 1,
+        ...mockInputUser,
+        create_at: new Date('2023-01-01T00:00:00Z'),
+        update_at: new Date('2023-01-01T00:00:00Z'),
+      }
+      mockedPrisma.user.create.mockResolvedValue(mockCreatedUser)
+
+      await ormModels.createUser(mockInputUser)
+
+      const createCall = mockedPrisma.user.create.mock.calls[0][0]
+      expect(createCall.data.create_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
+      expect(createCall.data.update_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
     })
   })
 })
