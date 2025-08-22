@@ -19,6 +19,7 @@ jest.mock('@/models', () => ({
     item: jest.fn(),
     order: jest.fn(),
     orderItem: jest.fn(),
+    createUser: jest.fn(),
   },
   sqlModels: {
     deliveryDir: jest.fn().mockReturnValue('/mock/delivery'),
@@ -843,6 +844,97 @@ describe('controllers', () => {
         expect(res.render).toHaveBeenCalledWith('server-error', {
           heading: '500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀',
         })
+      })
+    })
+
+    describe('ormCreateUser', () => {
+      it('creates user and returns JSON when validation passes', async () => {
+        const validData = {
+          name: 'Test User',
+          url: 'https://example.com',
+          phone1: '090',
+          phone2: '1234',
+          phone3: '5678',
+          email: 'test@example.com',
+        }
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: true,
+          data: validData,
+        })
+
+        const mockCreatedUser: User = {
+          id: 1,
+          name: 'Test User',
+          url: 'https://example.com',
+          phone: '090-1234-5678',
+          email: 'test@example.com',
+          create_at: new Date('2023-01-01T00:00:00Z'),
+          update_at: new Date('2023-01-01T00:00:00Z'),
+        }
+        mockedOrmModels.createUser.mockResolvedValue(mockCreatedUser)
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormCreateUser(req as Request, res as Response)
+
+        expect(mockedUserSchema.safeParse).toHaveBeenCalledWith(validData)
+        expect(mockedOrmModels.createUser).toHaveBeenCalledWith({
+          name: 'Test User',
+          url: 'https://example.com',
+          phone: '090-1234-5678',
+          email: 'test@example.com',
+        })
+        expect(res.json).toHaveBeenCalledWith(mockCreatedUser)
+      })
+
+      it('returns validation error when validation fails', async () => {
+        const invalidData = { name: '' }
+        const mockZodError = {
+          issues: [{ path: ['name'], message: '氏名は1文字以上で入力してください', code: 'custom' as const }],
+          format: jest.fn(),
+          flatten: jest.fn(),
+          addIssue: jest.fn(),
+          addIssues: jest.fn(),
+          isEmpty: false,
+        } as unknown as ZodError<{ name: string; url: string; phone1: string; phone2: string; phone3: string; email: string }>
+
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: false,
+          error: mockZodError,
+        })
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: name - 氏名は1文字以上で入力してください')
+      })
+
+      it('returns server error when createUser fails', async () => {
+        const validData = {
+          name: 'Test User',
+          url: 'https://example.com',
+          phone1: '090',
+          phone2: '1234',
+          phone3: '5678',
+          email: 'test@example.com',
+        }
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: true,
+          data: validData,
+        })
+        mockedOrmModels.createUser.mockRejectedValue(new Error('Database error'))
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormCreateUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(500)
+        expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
       })
     })
   })
