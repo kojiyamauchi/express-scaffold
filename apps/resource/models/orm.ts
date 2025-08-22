@@ -1,4 +1,5 @@
 import { Item, Order, OrderItem, User } from '@prisma/client'
+import dayjs from 'dayjs'
 
 import { prisma } from '@/libs'
 
@@ -116,6 +117,18 @@ export const ormModels = {
       },
       where: {
         id: id,
+      },
+    })
+  },
+  createUser: async (user: Omit<User, 'id' | 'create_at' | 'update_at'>): Promise<User> => {
+    return prisma.user.create({
+      data: {
+        name: user.name,
+        url: user.url,
+        phone: user.phone,
+        email: user.email,
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
       },
     })
   },
