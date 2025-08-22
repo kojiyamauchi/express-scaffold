@@ -29,7 +29,7 @@ describe('sqlModels', (): void => {
     it('returns correct delivery directory path', (): void => {
       const result = sqlModels.deliveryDir()
 
-      expect(result).toBe(`Looking For Delivery Dir From Models.\n/Users/kojiyamauchi/Desktop/application-templates/express-scaffold/delivery`)
+      expect(result).toMatch(/Looking For Delivery Dir From Models\.\n.*\/delivery$/)
     })
   })
 
