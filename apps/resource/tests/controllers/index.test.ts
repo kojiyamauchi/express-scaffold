@@ -20,6 +20,8 @@ jest.mock('@/models', () => ({
     order: jest.fn(),
     orderItem: jest.fn(),
     createUser: jest.fn(),
+    updateUser: jest.fn(),
+    deleteUser: jest.fn(),
   },
   sqlModels: {
     deliveryDir: jest.fn().mockReturnValue('/mock/delivery'),
@@ -932,6 +934,145 @@ describe('controllers', () => {
         const res = mockResponse()
 
         await controllers.ormCreateUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(500)
+        expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
+      })
+    })
+
+    describe('ormUpdateUser', () => {
+      it('updates user and returns JSON when validation passes', async () => {
+        const validData = {
+          id: 1,
+          name: 'Updated User',
+          url: 'https://updated-example.com',
+          phone1: '080',
+          phone2: '9876',
+          phone3: '5432',
+          email: 'updated@example.com',
+        }
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: true,
+          data: validData,
+        })
+
+        const mockUpdatedUser: User = {
+          id: 1,
+          name: 'Updated User',
+          url: 'https://updated-example.com',
+          phone: '080-9876-5432',
+          email: 'updated@example.com',
+          create_at: new Date('2023-01-01T00:00:00Z'),
+          update_at: new Date('2023-01-02T00:00:00Z'),
+        }
+        mockedOrmModels.updateUser.mockResolvedValue(mockUpdatedUser)
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormUpdateUser(req as Request, res as Response)
+
+        expect(mockedUserSchema.safeParse).toHaveBeenCalledWith(validData)
+        expect(mockedOrmModels.updateUser).toHaveBeenCalledWith({
+          id: 1,
+          name: 'Updated User',
+          url: 'https://updated-example.com',
+          phone: '080-9876-5432',
+          email: 'updated@example.com',
+        })
+        expect(res.json).toHaveBeenCalledWith(mockUpdatedUser)
+      })
+
+      it('returns validation error when validation fails', async () => {
+        const invalidData = { id: 1, name: '' }
+        const mockZodError = {
+          issues: [{ path: ['name'], message: '氏名は1文字以上で入力してください', code: 'custom' as const }],
+          format: jest.fn(),
+          flatten: jest.fn(),
+          addIssue: jest.fn(),
+          addIssues: jest.fn(),
+          isEmpty: false,
+        } as unknown as ZodError<{ name: string; url: string; phone1: string; phone2: string; phone3: string; email: string }>
+
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: false,
+          error: mockZodError,
+        })
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormUpdateUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: name - 氏名は1文字以上で入力してください')
+      })
+
+      it('returns server error when updateUser fails', async () => {
+        const validData = {
+          id: 1,
+          name: 'Updated User',
+          url: 'https://updated-example.com',
+          phone1: '080',
+          phone2: '9876',
+          phone3: '5432',
+          email: 'updated@example.com',
+        }
+        mockedUserSchema.safeParse.mockReturnValue({
+          success: true,
+          data: validData,
+        })
+        mockedOrmModels.updateUser.mockRejectedValue(new Error('Database error'))
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormUpdateUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(500)
+        expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
+      })
+    })
+
+    describe('ormDeleteUser', () => {
+      it('deletes user and returns JSON when id is valid number', async () => {
+        const mockDeletedUser: User = {
+          id: 1,
+          name: 'Test User',
+          url: 'https://example.com',
+          phone: '090-1234-5678',
+          email: 'test@example.com',
+          create_at: new Date('2023-01-01T00:00:00Z'),
+          update_at: new Date('2023-01-01T00:00:00Z'),
+        }
+        mockedOrmModels.deleteUser.mockResolvedValue(mockDeletedUser)
+
+        const req = mockRequest({ body: { id: 1 } })
+        const res = mockResponse()
+
+        await controllers.ormDeleteUser(req as Request, res as Response)
+
+        expect(mockedOrmModels.deleteUser).toHaveBeenCalledWith(1)
+        expect(res.json).toHaveBeenCalledWith(mockDeletedUser)
+      })
+
+      it('returns validation error when id is not number', async () => {
+        const req = mockRequest({ body: { id: 'not-a-number' } })
+        const res = mockResponse()
+
+        await controllers.ormDeleteUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: Id is not number type')
+      })
+
+      it('returns server error when deleteUser fails', async () => {
+        mockedOrmModels.deleteUser.mockRejectedValue(new Error('Database error'))
+
+        const req = mockRequest({ body: { id: 1 } })
+        const res = mockResponse()
+
+        await controllers.ormDeleteUser(req as Request, res as Response)
 
         expect(res.status).toHaveBeenCalledWith(500)
         expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')

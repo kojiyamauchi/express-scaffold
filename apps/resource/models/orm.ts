@@ -132,4 +132,26 @@ export const ormModels = {
       },
     })
   },
+  updateUser: async (user: Omit<User, 'create_at' | 'update_at'>): Promise<User> => {
+    return prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        name: user.name,
+        url: user.url,
+        phone: user.phone,
+        email: user.email,
+        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+      },
+    })
+  },
+  deleteUser: async (userId: number): Promise<User> => {
+    return prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    })
+  },
 }

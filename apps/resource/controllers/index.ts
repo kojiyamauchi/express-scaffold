@@ -333,4 +333,51 @@ export const controllers = {
       res.send('500 Internal Server Error.')
     }
   },
+  ormUpdateUser: async (req: Request, res: Response): Promise<void> => {
+    const result = userSchema.safeParse(req.body)
+
+    if (!result.success) {
+      const errors = result.error.issues.map((error) => {
+        const result = { path: error.path.join('.'), message: error.message }
+        return result
+      })
+      const paths = errors.map((error) => error.path).join(', ')
+      const messages = errors.map((error) => error.message).join(', ')
+      const formatError = `Server validate error: ${paths} - ${messages}`
+      res.status(400)
+      res.send(formatError)
+      return
+    }
+
+    const formatUser = {
+      id: req.body.id,
+      name: result.data.name,
+      url: result.data.url,
+      phone: `${result.data.phone1}-${result.data.phone2}-${result.data.phone3}`,
+      email: result.data.email,
+    }
+
+    try {
+      const result = await ormModels.updateUser(formatUser)
+      res.json(result)
+    } catch {
+      res.status(500)
+      res.send('500 Internal Server Error.')
+    }
+  },
+  ormDeleteUser: async (req: Request, res: Response): Promise<void> => {
+    if (typeof req.body.id !== 'number') {
+      res.status(400)
+      res.send('Server validate error: Id is not number type')
+      return
+    }
+
+    try {
+      const result = await ormModels.deleteUser(req.body.id as number)
+      res.json(result)
+    } catch {
+      res.status(500)
+      res.send('500 Internal Server Error.')
+    }
+  },
 }

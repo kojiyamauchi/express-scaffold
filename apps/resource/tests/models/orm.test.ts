@@ -10,6 +10,8 @@ jest.mock('@/libs', () => ({
       findMany: jest.fn(),
       findUnique: jest.fn(),
       create: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
     },
     item: {
       findMany: jest.fn(),
@@ -31,6 +33,8 @@ const mockedPrisma = {
     findMany: prisma.user.findMany as jest.MockedFunction<typeof prisma.user.findMany>,
     findUnique: prisma.user.findUnique as jest.MockedFunction<typeof prisma.user.findUnique>,
     create: prisma.user.create as jest.MockedFunction<typeof prisma.user.create>,
+    update: prisma.user.update as jest.MockedFunction<typeof prisma.user.update>,
+    delete: prisma.user.delete as jest.MockedFunction<typeof prisma.user.delete>,
   },
   item: {
     findMany: prisma.item.findMany as jest.MockedFunction<typeof prisma.item.findMany>,
@@ -473,6 +477,93 @@ describe('ormModels', (): void => {
       const createCall = mockedPrisma.user.create.mock.calls[0][0]
       expect(createCall.data.create_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
       expect(createCall.data.update_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
+    })
+  })
+
+  describe('updateUser', (): void => {
+    it('updates user with correct parameters', async (): Promise<void> => {
+      const mockInputUser = {
+        id: 1,
+        name: 'Updated User',
+        url: 'https://updated-example.com',
+        phone: '080-9876-5432',
+        email: 'updated@example.com',
+      }
+
+      const mockUpdatedUser: User = {
+        id: 1,
+        name: 'Updated User',
+        url: 'https://updated-example.com',
+        phone: '080-9876-5432',
+        email: 'updated@example.com',
+        create_at: new Date('2023-01-01T00:00:00Z'),
+        update_at: new Date('2023-01-02T00:00:00Z'),
+      }
+      mockedPrisma.user.update.mockResolvedValue(mockUpdatedUser)
+
+      const result = await ormModels.updateUser(mockInputUser)
+
+      expect(mockedPrisma.user.update).toHaveBeenCalledWith({
+        where: {
+          id: 1,
+        },
+        data: {
+          name: 'Updated User',
+          url: 'https://updated-example.com',
+          phone: '080-9876-5432',
+          email: 'updated@example.com',
+          create_at: expect.any(String),
+          update_at: expect.any(String),
+        },
+      })
+      expect(result).toEqual(mockUpdatedUser)
+    })
+
+    it('formats timestamps correctly', async (): Promise<void> => {
+      const mockInputUser = {
+        id: 1,
+        name: 'Updated User',
+        url: 'https://updated-example.com',
+        phone: '080-9876-5432',
+        email: 'updated@example.com',
+      }
+
+      const mockUpdatedUser: User = {
+        ...mockInputUser,
+        create_at: new Date('2023-01-01T00:00:00Z'),
+        update_at: new Date('2023-01-02T00:00:00Z'),
+      }
+      mockedPrisma.user.update.mockResolvedValue(mockUpdatedUser)
+
+      await ormModels.updateUser(mockInputUser)
+
+      const updateCall = mockedPrisma.user.update.mock.calls[0][0]
+      expect(updateCall.data.create_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
+      expect(updateCall.data.update_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
+    })
+  })
+
+  describe('deleteUser', (): void => {
+    it('deletes user with correct id', async (): Promise<void> => {
+      const mockDeletedUser: User = {
+        id: 1,
+        name: 'Test User',
+        url: 'https://example.com',
+        phone: '090-1234-5678',
+        email: 'test@example.com',
+        create_at: new Date('2023-01-01T00:00:00Z'),
+        update_at: new Date('2023-01-01T00:00:00Z'),
+      }
+      mockedPrisma.user.delete.mockResolvedValue(mockDeletedUser)
+
+      const result = await ormModels.deleteUser(1)
+
+      expect(mockedPrisma.user.delete).toHaveBeenCalledWith({
+        where: {
+          id: 1,
+        },
+      })
+      expect(result).toEqual(mockDeletedUser)
     })
   })
 })
