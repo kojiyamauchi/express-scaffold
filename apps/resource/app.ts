@@ -80,6 +80,8 @@ app.use('/api/orm/item', routes.ormItem)
 app.use('/api/orm/order', routes.ormOrder)
 app.use('/api/orm/order-item', routes.ormOrderItem)
 app.use('/api/orm/create-user', routes.ormCreateUser)
+app.use('/api/orm/update-user', routes.ormUpdateUser)
+app.use('/api/orm/delete-user', routes.ormDeleteUser)
 
 // Catch 404 and Forward to Error Handler
 app.use((_req, _res, next) => next(createError(404)))
