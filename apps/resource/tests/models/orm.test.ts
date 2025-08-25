@@ -20,6 +20,7 @@ jest.mock('@/libs', () => ({
     order: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
+      create: jest.fn(),
     },
     orderItem: {
       findMany: jest.fn(),
@@ -43,6 +44,7 @@ const mockedPrisma = {
   order: {
     findMany: prisma.order.findMany as jest.MockedFunction<typeof prisma.order.findMany>,
     findUnique: prisma.order.findUnique as jest.MockedFunction<typeof prisma.order.findUnique>,
+    create: prisma.order.create as jest.MockedFunction<typeof prisma.order.create>,
   },
   orderItem: {
     findMany: prisma.orderItem.findMany as jest.MockedFunction<typeof prisma.orderItem.findMany>,
@@ -564,6 +566,217 @@ describe('ormModels', (): void => {
         },
       })
       expect(result).toEqual(mockDeletedUser)
+    })
+  })
+
+  describe('createOrder', (): void => {
+    it('creates a new order with correct parameters', async (): Promise<void> => {
+      const mockInputOrder = {
+        userId: 1,
+        totalPrice: 5000,
+        orderItems: [
+          {
+            item: {
+              connect: { id: 1 },
+            },
+            quantity: 2,
+          },
+          {
+            item: {
+              connect: { id: 2 },
+            },
+            quantity: 1,
+          },
+        ],
+      }
+
+      const mockCreatedOrder: Order = {
+        id: 1,
+        userId: 1,
+        order_date: new Date('2023-01-01T00:00:00Z'),
+        total_price: { toNumber: (): number => 5000, toString: (): string => '5000' } as Decimal,
+      }
+      mockedPrisma.order.create.mockResolvedValue(mockCreatedOrder)
+
+      const result = await ormModels.createOrder(mockInputOrder)
+
+      expect(mockedPrisma.order.create).toHaveBeenCalledWith({
+        data: {
+          user: {
+            connect: { id: 1 },
+          },
+          order_date: expect.any(String),
+          total_price: expect.any(Object),
+          order_items: {
+            create: [
+              {
+                item: {
+                  connect: { id: 1 },
+                },
+                quantity: 2,
+              },
+              {
+                item: {
+                  connect: { id: 2 },
+                },
+                quantity: 1,
+              },
+            ],
+          },
+        },
+        include: {
+          order_items: {
+            include: { item: true },
+          },
+        },
+      })
+      expect(result).toEqual(mockCreatedOrder)
+    })
+
+    it('formats order date correctly', async (): Promise<void> => {
+      const mockInputOrder = {
+        userId: 1,
+        totalPrice: 3000,
+        orderItems: [
+          {
+            item: {
+              connect: { id: 1 },
+            },
+            quantity: 1,
+          },
+        ],
+      }
+
+      const mockCreatedOrder: Order = {
+        id: 1,
+        userId: 1,
+        order_date: new Date('2023-01-01T00:00:00Z'),
+        total_price: { toNumber: (): number => 3000, toString: (): string => '3000' } as Decimal,
+      }
+      mockedPrisma.order.create.mockResolvedValue(mockCreatedOrder)
+
+      await ormModels.createOrder(mockInputOrder)
+
+      const createCall = mockedPrisma.order.create.mock.calls[0][0]
+      expect(createCall.data.order_date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
+    })
+
+    it('converts totalPrice to Prisma.Decimal correctly', async (): Promise<void> => {
+      const mockInputOrder = {
+        userId: 1,
+        totalPrice: 7500,
+        orderItems: [
+          {
+            item: {
+              connect: { id: 3 },
+            },
+            quantity: 3,
+          },
+        ],
+      }
+
+      const mockCreatedOrder: Order = {
+        id: 1,
+        userId: 1,
+        order_date: new Date('2023-01-01T00:00:00Z'),
+        total_price: { toNumber: (): number => 7500, toString: (): string => '7500' } as Decimal,
+      }
+      mockedPrisma.order.create.mockResolvedValue(mockCreatedOrder)
+
+      await ormModels.createOrder(mockInputOrder)
+
+      const createCall = mockedPrisma.order.create.mock.calls[0][0]
+      expect(createCall.data.total_price).toBeDefined()
+      expect(typeof createCall.data.total_price).toBe('object')
+    })
+
+    it('handles multiple order items correctly', async (): Promise<void> => {
+      const mockInputOrder = {
+        userId: 2,
+        totalPrice: 10000,
+        orderItems: [
+          {
+            item: {
+              connect: { id: 1 },
+            },
+            quantity: 2,
+          },
+          {
+            item: {
+              connect: { id: 2 },
+            },
+            quantity: 3,
+          },
+          {
+            item: {
+              connect: { id: 3 },
+            },
+            quantity: 1,
+          },
+        ],
+      }
+
+      const mockCreatedOrder: Order = {
+        id: 2,
+        userId: 2,
+        order_date: new Date('2023-01-01T00:00:00Z'),
+        total_price: { toNumber: (): number => 10000, toString: (): string => '10000' } as Decimal,
+      }
+      mockedPrisma.order.create.mockResolvedValue(mockCreatedOrder)
+
+      const result = await ormModels.createOrder(mockInputOrder)
+
+      const createCall = mockedPrisma.order.create.mock.calls[0][0]
+      const orderItems = createCall.data.order_items?.create as Array<{
+        item: { connect: { id: number } }
+        quantity: number
+      }>
+      expect(orderItems).toHaveLength(3)
+      expect(orderItems[0]).toEqual({
+        item: { connect: { id: 1 } },
+        quantity: 2,
+      })
+      expect(orderItems[1]).toEqual({
+        item: { connect: { id: 2 } },
+        quantity: 3,
+      })
+      expect(orderItems[2]).toEqual({
+        item: { connect: { id: 3 } },
+        quantity: 1,
+      })
+      expect(result).toEqual(mockCreatedOrder)
+    })
+
+    it('includes correct relation data in response', async (): Promise<void> => {
+      const mockInputOrder = {
+        userId: 1,
+        totalPrice: 2500,
+        orderItems: [
+          {
+            item: {
+              connect: { id: 1 },
+            },
+            quantity: 1,
+          },
+        ],
+      }
+
+      const mockCreatedOrder: Order = {
+        id: 1,
+        userId: 1,
+        order_date: new Date('2023-01-01T00:00:00Z'),
+        total_price: { toNumber: (): number => 2500, toString: (): string => '2500' } as Decimal,
+      }
+      mockedPrisma.order.create.mockResolvedValue(mockCreatedOrder)
+
+      await ormModels.createOrder(mockInputOrder)
+
+      const createCall = mockedPrisma.order.create.mock.calls[0][0]
+      expect(createCall.include).toEqual({
+        order_items: {
+          include: { item: true },
+        },
+      })
     })
   })
 })
