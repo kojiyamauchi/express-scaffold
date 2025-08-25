@@ -366,7 +366,7 @@ export const controllers = {
     }
   },
   ormDeleteUser: async (req: Request, res: Response): Promise<void> => {
-    if (typeof req.body.id !== 'number') {
+    if (typeof req.body.id !== 'number' || isNaN(req.body.id)) {
       res.status(400)
       res.send('Server validate error: Id is not number type')
       return
@@ -374,6 +374,61 @@ export const controllers = {
 
     try {
       const result = await ormModels.deleteUser(req.body.id as number)
+      res.json(result)
+    } catch {
+      res.status(500)
+      res.send('500 Internal Server Error.')
+    }
+  },
+  ormCreateOrder: async (req: Request, res: Response): Promise<void> => {
+    const isValid1 = ((): boolean => {
+      if (typeof req.body.userId !== 'number' || isNaN(req.body.userId)) {
+        return false
+      }
+      if (typeof req.body.totalPrice !== 'number' || isNaN(req.body.totalPrice)) {
+        return false
+      }
+      return true
+    })()
+
+    const isValid2 = ((): boolean => {
+      const orderItems: { itemId: unknown; quantity: unknown }[] = req.body.orderItems
+      const result = orderItems.every((item) => {
+        return typeof item.itemId === 'number' && !isNaN(item.itemId) && typeof item.quantity === 'number' && !isNaN(item.quantity)
+      })
+      return result
+    })()
+
+    if (!isValid1 || !isValid2) {
+      res.status(400)
+      res.send('Server validate error: request body is not number type')
+      return
+    }
+
+    const formatOrder: {
+      userId: number
+      totalPrice: number
+      orderItems: {
+        item: {
+          connect: { id: number }
+        }
+        quantity: number
+      }[]
+    } = {
+      userId: req.body.userId,
+      totalPrice: req.body.totalPrice,
+      orderItems: req.body.orderItems.map((item: { itemId: number; quantity: number }) => {
+        return {
+          item: {
+            connect: { id: item.itemId },
+          },
+          quantity: item.quantity,
+        }
+      }),
+    }
+
+    try {
+      const result = await ormModels.createOrder(formatOrder)
       res.json(result)
     } catch {
       res.status(500)
