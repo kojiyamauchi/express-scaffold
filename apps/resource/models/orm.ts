@@ -1,4 +1,4 @@
-import { Item, Order, OrderItem, User } from '@prisma/client'
+import { Item, Order, OrderItem, Prisma, User } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import { prisma } from '@/libs'
@@ -151,6 +151,39 @@ export const ormModels = {
     return prisma.user.delete({
       where: {
         id: userId,
+      },
+    })
+  },
+  createOrder: async ({
+    userId,
+    totalPrice,
+    orderItems,
+  }: {
+    userId: number
+    totalPrice: number
+    orderItems: {
+      item: {
+        connect: { id: number }
+      }
+      quantity: number
+    }[]
+  }): Promise<Order> => {
+    return prisma.order.create({
+      data: {
+        user: {
+          connect: { id: userId },
+        },
+        order_date: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+        total_price: new Prisma.Decimal(totalPrice),
+
+        order_items: {
+          create: orderItems,
+        },
+      },
+      include: {
+        order_items: {
+          include: { item: true },
+        },
       },
     })
   },

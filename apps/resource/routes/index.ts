@@ -30,4 +30,5 @@ export const routes = {
   ormCreateUser: router.post('/api/orm/create-user', controllers.ormCreateUser),
   ormUpdateUser: router.put('/api/orm/update-user', controllers.ormUpdateUser),
   ormDeleteUser: router.delete('/api/orm/delete-user', controllers.ormDeleteUser),
+  ormCreateOrder: router.post('/api/orm/create-order', controllers.ormCreateOrder),
 }

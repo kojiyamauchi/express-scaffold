@@ -22,6 +22,7 @@ jest.mock('@/models', () => ({
     createUser: jest.fn(),
     updateUser: jest.fn(),
     deleteUser: jest.fn(),
+    createOrder: jest.fn(),
   },
   sqlModels: {
     deliveryDir: jest.fn().mockReturnValue('/mock/delivery'),
@@ -1066,6 +1067,16 @@ describe('controllers', () => {
         expect(res.send).toHaveBeenCalledWith('Server validate error: Id is not number type')
       })
 
+      it('returns validation error when id is NaN', async () => {
+        const req = mockRequest({ body: { id: NaN } })
+        const res = mockResponse()
+
+        await controllers.ormDeleteUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: Id is not number type')
+      })
+
       it('returns server error when deleteUser fails', async () => {
         mockedOrmModels.deleteUser.mockRejectedValue(new Error('Database error'))
 
@@ -1073,6 +1084,187 @@ describe('controllers', () => {
         const res = mockResponse()
 
         await controllers.ormDeleteUser(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(500)
+        expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
+      })
+    })
+
+    describe('ormCreateOrder', () => {
+      it('creates order and returns JSON when validation passes', async () => {
+        const validData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [
+            { itemId: 1, quantity: 2 },
+            { itemId: 2, quantity: 1 },
+          ],
+        }
+
+        const mockCreatedOrder: Order = {
+          id: 1,
+          userId: 1,
+          order_date: new Date('2023-01-01T00:00:00Z'),
+          total_price: { toNumber: () => 5000, toString: () => '5000' } as Decimal,
+        }
+        mockedOrmModels.createOrder.mockResolvedValue(mockCreatedOrder)
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(mockedOrmModels.createOrder).toHaveBeenCalledWith({
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [
+            { item: { connect: { id: 1 } }, quantity: 2 },
+            { item: { connect: { id: 2 } }, quantity: 1 },
+          ],
+        })
+        expect(res.json).toHaveBeenCalledWith(mockCreatedOrder)
+      })
+
+      it('returns validation error when userId is not number', async () => {
+        const invalidData = {
+          userId: 'not-a-number',
+          totalPrice: 5000,
+          orderItems: [{ itemId: 1, quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when userId is NaN', async () => {
+        const invalidData = {
+          userId: NaN,
+          totalPrice: 5000,
+          orderItems: [{ itemId: 1, quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when totalPrice is not number', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: 'not-a-number',
+          orderItems: [{ itemId: 1, quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when totalPrice is NaN', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: NaN,
+          orderItems: [{ itemId: 1, quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when orderItems itemId is not number', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [{ itemId: 'not-a-number', quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when orderItems itemId is NaN', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [{ itemId: NaN, quantity: 2 }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when orderItems quantity is not number', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [{ itemId: 1, quantity: 'not-a-number' }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns validation error when orderItems quantity is NaN', async () => {
+        const invalidData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [{ itemId: 1, quantity: NaN }],
+        }
+
+        const req = mockRequest({ body: invalidData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.send).toHaveBeenCalledWith('Server validate error: request body is not number type')
+      })
+
+      it('returns server error when createOrder fails', async () => {
+        const validData = {
+          userId: 1,
+          totalPrice: 5000,
+          orderItems: [{ itemId: 1, quantity: 2 }],
+        }
+        mockedOrmModels.createOrder.mockRejectedValue(new Error('Database error'))
+
+        const req = mockRequest({ body: validData })
+        const res = mockResponse()
+
+        await controllers.ormCreateOrder(req as Request, res as Response)
 
         expect(res.status).toHaveBeenCalledWith(500)
         expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
