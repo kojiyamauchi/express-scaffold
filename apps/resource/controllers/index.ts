@@ -435,4 +435,24 @@ export const controllers = {
       res.send('500 Internal Server Error.')
     }
   },
+  ormFeeds: async (req: Request, res: Response): Promise<void> => {
+    const feedId = ((): number | undefined => {
+      if (typeof req.query.id === 'string') {
+        return Number(req.query.id)
+      }
+      return undefined
+    })()
+
+    try {
+      const result = await ormModels.feeds(feedId)
+      if (result.length > 0) {
+        res.json(result)
+      } else {
+        res.send('No results found.')
+      }
+    } catch {
+      res.status(500)
+      res.render('server-error', { heading: `500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀` })
+    }
+  },
 }
