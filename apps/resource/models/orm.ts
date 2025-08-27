@@ -1,4 +1,4 @@
-import { Item, Order, OrderItem, Prisma, User } from '@prisma/client'
+import { Feed, Item, Order, OrderItem, Prisma, User } from '@prisma/client'
 import dayjs from 'dayjs'
 
 import { prisma } from '@/libs'
@@ -184,6 +184,20 @@ export const ormModels = {
         order_items: {
           include: { item: true },
         },
+      },
+    })
+  },
+  feeds: async (id: number | undefined): Promise<Feed[]> => {
+    if (typeof id === 'number' && isNaN(id)) {
+      return []
+    }
+
+    return prisma.feed.findMany({
+      include: {
+        item: true,
+      },
+      where: {
+        id: id,
       },
     })
   },
