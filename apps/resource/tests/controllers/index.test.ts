@@ -1,4 +1,4 @@
-import type { Item, Order, OrderItem, User } from '@prisma/client'
+import type { Feed, Item, Order, OrderItem, User } from '@prisma/client'
 import type { Decimal } from '@prisma/client/runtime/library'
 import { Request, Response } from 'express'
 import type { ResultSetHeader } from 'mysql2'
@@ -23,6 +23,7 @@ jest.mock('@/models', () => ({
     updateUser: jest.fn(),
     deleteUser: jest.fn(),
     createOrder: jest.fn(),
+    feeds: jest.fn(),
   },
   sqlModels: {
     deliveryDir: jest.fn().mockReturnValue('/mock/delivery'),
@@ -1268,6 +1269,88 @@ describe('controllers', () => {
 
         expect(res.status).toHaveBeenCalledWith(500)
         expect(res.send).toHaveBeenCalledWith('500 Internal Server Error.')
+      })
+    })
+
+    describe('ormFeeds', () => {
+      it('returns JSON when feeds found', async () => {
+        const mockFeeds: Feed[] = [
+          {
+            id: 1,
+            content: 'Test Feed Content',
+            create_at: new Date('2023-01-01T00:00:00Z'),
+            update_at: new Date('2023-01-01T00:00:00Z'),
+            item_id: 1,
+          },
+        ]
+        mockedOrmModels.feeds.mockResolvedValue(mockFeeds)
+
+        const req = mockRequest({ query: { id: '1' } })
+        const res = mockResponse()
+
+        await controllers.ormFeeds(req as Request, res as Response)
+
+        expect(mockedOrmModels.feeds).toHaveBeenCalledWith(1)
+        expect(res.json).toHaveBeenCalledWith(mockFeeds)
+      })
+
+      it('returns no results message when no feeds found', async () => {
+        mockedOrmModels.feeds.mockResolvedValue([])
+
+        const req = mockRequest()
+        const res = mockResponse()
+
+        await controllers.ormFeeds(req as Request, res as Response)
+
+        expect(mockedOrmModels.feeds).toHaveBeenCalledWith(undefined)
+        expect(res.send).toHaveBeenCalledWith('No results found.')
+      })
+
+      it('renders server error when ormFeeds throws error', async () => {
+        mockedOrmModels.feeds.mockRejectedValue(new Error('Database error'))
+
+        const req = mockRequest()
+        const res = mockResponse()
+
+        await controllers.ormFeeds(req as Request, res as Response)
+
+        expect(res.status).toHaveBeenCalledWith(500)
+        expect(res.render).toHaveBeenCalledWith('server-error', {
+          heading: '500 Internal Server Error,<br>Please Try Again Later.<br>Redirect to Top 🚀',
+        })
+      })
+
+      it('calls ormFeeds with correct id when string id query parameter provided', async () => {
+        const mockFeeds: Feed[] = [
+          {
+            id: 2,
+            content: 'Second Feed Content',
+            create_at: new Date('2023-01-02T00:00:00Z'),
+            update_at: new Date('2023-01-02T00:00:00Z'),
+            item_id: 2,
+          },
+        ]
+        mockedOrmModels.feeds.mockResolvedValue(mockFeeds)
+
+        const req = mockRequest({ query: { id: '2' } })
+        const res = mockResponse()
+
+        await controllers.ormFeeds(req as Request, res as Response)
+
+        expect(mockedOrmModels.feeds).toHaveBeenCalledWith(2)
+        expect(res.json).toHaveBeenCalledWith(mockFeeds)
+      })
+
+      it('calls ormFeeds with undefined when non-string query parameter provided', async () => {
+        mockedOrmModels.feeds.mockResolvedValue([])
+
+        const req = mockRequest({ query: { id: ['multiple', 'values'] } })
+        const res = mockResponse()
+
+        await controllers.ormFeeds(req as Request, res as Response)
+
+        expect(mockedOrmModels.feeds).toHaveBeenCalledWith(undefined)
+        expect(res.send).toHaveBeenCalledWith('No results found.')
       })
     })
   })

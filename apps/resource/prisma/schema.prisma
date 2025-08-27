@@ -26,6 +26,8 @@ model Item {
   price        Decimal
 
   order_items OrderItem[]
+
+  Feed Feed[]
 }
 
 model OrderItem {
@@ -46,4 +48,14 @@ model Order {
 
   user        User        @relation(fields: [userId], references: [id])
   order_items OrderItem[]
+}
+
+model Feed {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.VarChar(1000)
+  create_at DateTime @db.DateTime(0)
+  update_at DateTime @db.DateTime(0)
+
+  item_id Int?
+  item    Item? @relation(fields: [item_id], references: [id])
 }
