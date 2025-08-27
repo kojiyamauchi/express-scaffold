@@ -1,4 +1,4 @@
-import type { Item, Order, OrderItem, User } from '@prisma/client'
+import type { Feed, Item, Order, OrderItem, User } from '@prisma/client'
 import type { Decimal } from '@prisma/client/runtime/library'
 
 import { prisma } from '@/libs'
@@ -26,6 +26,9 @@ jest.mock('@/libs', () => ({
       findMany: jest.fn(),
       findUnique: jest.fn(),
     },
+    feed: {
+      findMany: jest.fn(),
+    },
   },
 }))
 
@@ -49,6 +52,9 @@ const mockedPrisma = {
   orderItem: {
     findMany: prisma.orderItem.findMany as jest.MockedFunction<typeof prisma.orderItem.findMany>,
     findUnique: prisma.orderItem.findUnique as jest.MockedFunction<typeof prisma.orderItem.findUnique>,
+  },
+  feed: {
+    findMany: prisma.feed.findMany as jest.MockedFunction<typeof prisma.feed.findMany>,
   },
 }
 
@@ -776,6 +782,127 @@ describe('ormModels', (): void => {
         order_items: {
           include: { item: true },
         },
+      })
+    })
+  })
+
+  describe('feeds', (): void => {
+    it('returns empty array when id is NaN', async (): Promise<void> => {
+      const result = await ormModels.feeds(Number.NaN)
+
+      expect(result).toEqual([])
+      expect(mockedPrisma.feed.findMany).not.toHaveBeenCalled()
+    })
+
+    it('calls prisma.feed.findMany with correct parameters when id is provided', async (): Promise<void> => {
+      const mockFeeds: Feed[] = [
+        {
+          id: 1,
+          content: 'Test Feed Content',
+          create_at: new Date('2023-01-01T00:00:00Z'),
+          update_at: new Date('2023-01-01T00:00:00Z'),
+          item_id: 1,
+        },
+      ]
+      mockedPrisma.feed.findMany.mockResolvedValue(mockFeeds)
+
+      const result = await ormModels.feeds(1)
+
+      expect(mockedPrisma.feed.findMany).toHaveBeenCalledWith({
+        include: {
+          item: true,
+        },
+        where: {
+          id: 1,
+        },
+      })
+      expect(result).toEqual(mockFeeds)
+    })
+
+    it('calls prisma.feed.findMany with correct parameters when id is undefined', async (): Promise<void> => {
+      const mockFeeds: Feed[] = []
+      mockedPrisma.feed.findMany.mockResolvedValue(mockFeeds)
+
+      const result = await ormModels.feeds(undefined)
+
+      expect(mockedPrisma.feed.findMany).toHaveBeenCalledWith({
+        include: {
+          item: true,
+        },
+        where: {
+          id: undefined,
+        },
+      })
+      expect(result).toEqual(mockFeeds)
+    })
+
+    it('returns feeds with item relation when feeds exist', async (): Promise<void> => {
+      const mockFeeds: Feed[] = [
+        {
+          id: 1,
+          content: 'First Feed Content',
+          create_at: new Date('2023-01-01T00:00:00Z'),
+          update_at: new Date('2023-01-01T00:00:00Z'),
+          item_id: 1,
+        },
+        {
+          id: 2,
+          content: 'Second Feed Content',
+          create_at: new Date('2023-01-02T00:00:00Z'),
+          update_at: new Date('2023-01-02T00:00:00Z'),
+          item_id: null,
+        },
+      ]
+      mockedPrisma.feed.findMany.mockResolvedValue(mockFeeds)
+
+      const result = await ormModels.feeds(undefined)
+
+      expect(mockedPrisma.feed.findMany).toHaveBeenCalledWith({
+        include: {
+          item: true,
+        },
+        where: {
+          id: undefined,
+        },
+      })
+      expect(result).toEqual(mockFeeds)
+      expect(result).toHaveLength(2)
+    })
+
+    it('returns single feed when specific id is provided', async (): Promise<void> => {
+      const mockFeed: Feed[] = [
+        {
+          id: 5,
+          content: 'Specific Feed Content',
+          create_at: new Date('2023-01-05T00:00:00Z'),
+          update_at: new Date('2023-01-05T00:00:00Z'),
+          item_id: 3,
+        },
+      ]
+      mockedPrisma.feed.findMany.mockResolvedValue(mockFeed)
+
+      const result = await ormModels.feeds(5)
+
+      expect(mockedPrisma.feed.findMany).toHaveBeenCalledWith({
+        include: {
+          item: true,
+        },
+        where: {
+          id: 5,
+        },
+      })
+      expect(result).toEqual(mockFeed)
+      expect(result).toHaveLength(1)
+    })
+
+    it('includes item relation in the query', async (): Promise<void> => {
+      mockedPrisma.feed.findMany.mockResolvedValue([])
+
+      await ormModels.feeds(1)
+
+      const callArgs = mockedPrisma.feed.findMany.mock.calls[0]?.[0]
+      expect(callArgs?.include).toEqual({
+        item: true,
       })
     })
   })
