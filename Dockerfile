@@ -31,5 +31,5 @@ RUN corepack enable
 RUN yarn set version 4.6.0
 RUN yarn workspace client add global gulp-cli \
     && yarn
-EXPOSE 3000 8000 9999
+EXPOSE 4000 8000 9999
 CMD ["yarn", "dev"]

@@ -6,7 +6,7 @@ module.exports = {
   https: true,
   open: false,
   proxy: {
-    target: 'https://localhost:3000',
+    target: 'https://localhost:4000',
   },
   port: 8000,
   browser: 'google chrome canary',

@@ -101,7 +101,7 @@ Prismaスキーマ（`apps/resource/prisma/schema.prisma`）には以下のモ�
 
 Docker Composeによる開発環境：
 
-- Express Server: `https://localhost:3000`
+- Express Server: `https://localhost:4000`
 - MySQL Database: `https://localhost:3306`
 - Browser Sync: `https://localhost:8000`
 - Browser Sync UI: `http://localhost:9999`
