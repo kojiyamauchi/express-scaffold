@@ -69,7 +69,7 @@
     "zod": "4.0.15"
   },
   "scripts": {
-    "dev:browser": "wait-on https://localhost:3000 && browser-sync start --config bs-config.js",
+    "dev:browser": "wait-on https://localhost:4000 && browser-sync start --config bs-config.js",
     "dev:nodemon": "nodemon",
     "dev": "run-p \"dev:*\"",
     "build": "tsc --project tsconfig.build.json && cp -r resource/views build",
