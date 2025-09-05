@@ -59,7 +59,12 @@
   }
 
   .letter {
+    overflow: hidden;
+    -webkit-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
     font-size: 14px;
+    white-space: nowrap;
 
     &.id {
       width: 35px;
