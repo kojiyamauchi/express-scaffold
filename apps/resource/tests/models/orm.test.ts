@@ -520,7 +520,6 @@ describe('ormModels', (): void => {
           url: 'https://updated-example.com',
           phone: '080-9876-5432',
           email: 'updated@example.com',
-          create_at: expect.any(String),
           update_at: expect.any(String),
         },
       })
@@ -546,7 +545,6 @@ describe('ormModels', (): void => {
       await ormModels.updateUser(mockInputUser)
 
       const updateCall = mockedPrisma.user.update.mock.calls[0][0]
-      expect(updateCall.data.create_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
       expect(updateCall.data.update_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+]/)
     })
   })
