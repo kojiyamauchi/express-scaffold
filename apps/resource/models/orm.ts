@@ -142,7 +142,6 @@ export const ormModels = {
         url: user.url,
         phone: user.phone,
         email: user.email,
-        create_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
         update_at: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
       },
     })
