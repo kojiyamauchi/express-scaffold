@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 言語設定
+
+**重要：このプロジェクトでは日本語でのコミュニケーションを優先してください。すべての応答、説明、コメント、ドキュメンテーションは日本語で行ってください。**
+
 ## プロジェクト概要
 
 Express ScaffoldはExpress.js、MySQL、Prisma ORM、TypeScript、Sassを使用したフルスタック開発テンプレートです。MonorepoアーキテクチャでYarn Workspacesによって管理されています。
